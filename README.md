@@ -1,1 +1,1 @@
-Quick flask app for my RAs to find contracts on the internet and dump into database.
+small (indeed trivial) personal project: quick and dirty flask app on heroku for my research assistants to do some document coding.
