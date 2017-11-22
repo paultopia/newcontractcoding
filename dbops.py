@@ -14,13 +14,20 @@ def make_document_live(docid):
     return docid
 
 
-def mark_document_entered(docid):
+def mark_document_entered(docid, userid):
     """mark document as entered.
 
     if document already has a first entry, then add a second entry.
     if not, add a first entry.  Also flip state from live to not-live.
     """
-    pass
+    contract = Contracts.query.get(docid)
+    if contract.firstenteredby:
+        contract.secondenteredby = userid
+        contract.secondenteredon = datetime.utcnow()
+    else:
+        contract.firstenteredby = userid
+        contract.secondenteredby = datetime.utcnow()
+    return docid
 
 
 def serve_document(userid):
