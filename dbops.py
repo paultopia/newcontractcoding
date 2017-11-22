@@ -1,13 +1,17 @@
-from core import core
+from core import db
 from database import Contracts, Questions, Users, Answers
-
+from datetime import datetime
 
 def add_answer():
     pass
 
 
 def make_document_live(docid):
-    pass
+    contract = Contracts.query.get(docid)
+    contract.inprogress = True
+    contract.inprogressstarted = datetime.utcnow()
+    db.session.commit()
+    return docid
 
 
 def mark_document_entered(docid):
