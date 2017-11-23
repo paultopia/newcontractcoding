@@ -5,7 +5,7 @@ class Contracts(db.Model):
     __tablename__ = "contracts"
     id = db.Column(db.Integer, primary_key=True)
     contract = db.Column(db.Text())  # text of K
-    inprogress = db.Column(db.Boolean())  # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.
+    inprogress = db.Column(db.Boolean(), nullable=False)  # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.  Adding a NOT NULL constraint to make it easier to select not-in-progress columns by just checking for False, not False or None.
     inprogressstarted = db.Column(db.DateTime())  # last time coding started, for flushing purposes, to enable timeout after an hour.
     firstenteredby = db.Column(db.Integer(), db.ForeignKey('users.id'))
     firstenteredon = db.Column(db.DateTime())

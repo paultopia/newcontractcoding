@@ -71,6 +71,32 @@ def serve_document(user_id):
     return {"contract_id": contract.id, "contract_text": contract.contract, "user_id": user_id}
 
 
+def hours_ago(now, then):
+    diff = now - then
+    return diff.total_seconds() / 3600.0
+
+
+def is_stale(contract_row):
+    now = datetime.utcnow()
+    diff = hours_ago(now, contract_row.inprogressstarted) # may fail if inprogressstarted needs to be parsed to get a datetime object.
+    return diff > 1
+
+
 def flush_documents():
-    """get every doc that has been marked as live for > 1hr and mark it non-live"""
-    pass  # TODO
+    """get every doc that has been marked as live for > 1hr and mark it non-live
+    
+    I'm a little bit concerned about this: if there are a lot of stale documents, this could blow out the memory.  
+    Could I keep them out of memory by doing the update in the database layer inside the query object?  I'm not sure.
+    Need to find out: 
+    (a) whether some update like 2/3 in here https://stackoverflow.com/a/33638391/4386239 that doesn't actually fetch docs will keep the records out of memory in the python application, 
+    (b) if so, whether that will mean that heroku will let me run it off-dyno w/o memory limits, since postgres is all kinds of separate process, and 
+    (c) if so, how to actually execute the time diff check query inside the ORM rather than in python code.
+    
+    But that might also be a premature optimization, since this is an unlikely corner case---worst case scenario I blow the memory and then I just manually update every record to turn off inprogress flag and restart. 
+    """
+    contracts = Contracts.query.filter_by(inprogress=True).all()
+    stale = filter(is_stale, contracts)
+    for k in stale:
+        k.inprogress = False
+    db.session.commit()
+    return True
