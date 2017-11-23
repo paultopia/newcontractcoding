@@ -2,26 +2,14 @@ from core import db
 from database import Contracts, Questions, Users, Answers
 from datetime import datetime
 
-
-def add_answer(question_id, contract_id, choice, user_id):
-    answer = Answers(question_id, contract_id, choice, user_id)
-    db.session.add(answer)
-    db.session.commit()
-    return question_id, contract_id
+# TODO
+# I NEED TO ADD AUTHENTICATION AND user-getting.  this will probably do it: https://flask-httpauth.readthedocs.io/en/latest/
 
 
-def bulk_add_answers(answers_from_user, contract_id, user_id):
-    """expect answers_from_user to be a dict of {question_id: choice}
-    but may have to massage types to get them in; type massaging will happen
-    in a view function somewhere before it's passed in here (e.g. converting ids
-    from strings to integers)"""
-    answers = [Answers(x, contract_id, answers_from_user[x], user_id) for x in answers_from_user.keys()]
-    db.session.add_all(answers)
-    db.session.commit()
-    return contract_id
+def get_questions():
+    return Questions.query.order_by(Questions.id).all()
 
-
-def make_contract_live(contract_id):
+def mark_contract_live(contract_id):
     contract = Contracts.query.get(contract_id)
     contract.inprogress = True
     contract.inprogressstarted = datetime.utcnow()
@@ -47,7 +35,19 @@ def mark_contract_entered(contract_id, user_id):
     return contract_id
 
 
-def serve_document(user_id):
+def add_answers(answers_from_user, contract_id, user_id):
+    """expect answers_from_user to be a dict of {question_id: choice}
+    but may have to massage types to get them in; type massaging will happen
+    in a view function somewhere before it's passed in here (e.g. converting ids
+    from strings to integers)"""
+    answers = [Answers(x, contract_id, answers_from_user[x], user_id) for x in answers_from_user.keys()]
+    db.session.add_all(answers)
+    db.session.commit()
+    mark_contract_entered(contract_id, user_id)  # this includes a redundant db commit
+    return contract_id
+
+
+def fetch_contract(user_id):
     """select a document to code
 
     First look for documents that aren't entered at all, and select the first one.
@@ -67,7 +67,7 @@ def serve_document(user_id):
         if contract is None:
             # TODO: trigger some kind of log or other notification to me that this user doesn't have anything to do.  then I can go in and flush in progress, nag other people to catch up, etc.
             return None
-    make_contract_live(contract.id)
+    mark_contract_live(contract.id)
     return {"contract_id": contract.id, "contract_text": contract.contract, "user_id": user_id}
 
 
