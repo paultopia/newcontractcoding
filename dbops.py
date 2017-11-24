@@ -17,7 +17,7 @@ def mark_contract_live(contract_id):
     return contract_id
 
 
-def mark_contract_entered(contract_id, user_id):
+def mark_contract_entered(contract_id, user_name):
     """mark document as entered.
 
     if document already has a first entry, then add a second entry.
@@ -25,29 +25,29 @@ def mark_contract_entered(contract_id, user_id):
     """
     contract = Contracts.query.get(contract_id)
     if contract.firstenteredby:
-        contract.secondenteredby = user_id
+        contract.secondenteredby = user_name
         contract.secondenteredon = datetime.utcnow()
     else:
-        contract.firstenteredby = user_id
+        contract.firstenteredby = user_name
         contract.secondenteredby = datetime.utcnow()
     contract.inprogress = False
     db.session.commit()
     return contract_id
 
 
-def add_answers(answers_from_user, contract_id, user_id):
+def add_answers(answers_from_user, contract_id, user_name):
     """expect answers_from_user to be a dict of {question_id: choice}
     but may have to massage types to get them in; type massaging will happen
     in a view function somewhere before it's passed in here (e.g. converting ids
     from strings to integers)"""
-    answers = [Answers(x, contract_id, answers_from_user[x], user_id) for x in answers_from_user.keys()]
+    answers = [Answers(x, contract_id, answers_from_user[x], user_name) for x in answers_from_user.keys()]
     db.session.add_all(answers)
     db.session.commit()
-    mark_contract_entered(contract_id, user_id)  # this includes a redundant db commit
+    mark_contract_entered(contract_id, user_name)  # this includes a redundant db commit
     return contract_id
 
 
-def fetch_contract(user_id):
+def fetch_contract(user_name):
     """select a document to code
 
     First look for documents that aren't entered at all, and select the first one.
@@ -63,12 +63,12 @@ def fetch_contract(user_id):
     """
     contract = Contracts.query.filter_by(inprogress=False, firstenteredby=None).first()
     if contract is None:
-        contract = Contracts.query.filter(Contracts.name != user_id).filter_by(inprogress=False, secondenteredby=None).first()
+        contract = Contracts.query.filter(Contracts.name != user_name).filter_by(inprogress=False, secondenteredby=None).first()
         if contract is None:
             # TODO: trigger some kind of log or other notification to me that this user doesn't have anything to do.  then I can go in and flush in progress, nag other people to catch up, etc.
             return None
     mark_contract_live(contract.id)
-    return {"contract_id": contract.id, "contract_text": contract.contract, "user_id": user_id}
+    return {"contract_id": contract.id, "contract_text": contract.contract, "user_name": user_name}
 
 
 def hours_ago(now, then):

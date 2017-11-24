@@ -7,9 +7,9 @@ class Contracts(db.Model):
     contract = db.Column(db.Text())  # text of K
     inprogress = db.Column(db.Boolean(), nullable=False)  # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.  Adding a NOT NULL constraint to make it easier to select not-in-progress columns by just checking for False, not False or None.
     inprogressstarted = db.Column(db.DateTime())  # last time coding started, for flushing purposes, to enable timeout after an hour.
-    firstenteredby = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    firstenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     firstenteredon = db.Column(db.DateTime())
-    secondenteredby = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    secondenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     secondenteredon = db.Column(db.DateTime())
 
     def __init__(self):
@@ -27,8 +27,7 @@ class Questions(db.Model):
 
 class Users(db.Model):
     __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key=True)
-    lastname = db.Column(db.Text(), index=True, unique=True)
+    lastname = db.Column(db.String(50), primary_key=True)
     email = db.Column(db.Text(), index=True, unique=True)
     password = db.Column(db.Text())  # will store in clear because this is very unimportant + passwords will be assigned, not user-selected (so no dupe risk).  login will just be lastname + password, all in lowercase.
     isadmin = db.Column(db.Boolean())  # solely for purpose of flushing functionality, I'll have one admin page.
@@ -42,7 +41,7 @@ class Answers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Integer, db.ForeignKey('questions.id'))
     contract = db.Column(db.Integer, db.ForeignKey('contracts.id'))
-    enteredby = db.Column(db.Integer, db.ForeignKey('users.id'))
+    enteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     answer = db.Column(db.Text())  # should this be a bool or an integer?
     # don't need an entered date because can be inferred from enteredby + the enteredon fields in doc database.
 
