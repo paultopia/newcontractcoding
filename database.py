@@ -20,6 +20,7 @@ class Questions(db.Model):
     __tablename__ = "questions"
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text(), index=True, unique=True)
+    validator = db.Column(db.Boolean())  #  if True, then a false answer to this question terminates coding.  implement on client-side.  this is for quick dispatch of non-contract text.  
 
     def __init__(self):
         pass  # questions are going to be added on commandline, not in application code.
@@ -42,7 +43,7 @@ class Answers(db.Model):
     question = db.Column(db.Integer, db.ForeignKey('questions.id'))
     contract = db.Column(db.Integer, db.ForeignKey('contracts.id'))
     enteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
-    answer = db.Column(db.Text())  # should this be a bool or an integer?
+    answer = db.Column(db.Bool())  # should this be a bool or an integer?
     # don't need an entered date because can be inferred from enteredby + the enteredon fields in doc database.
 
     def __init__(self, question, contract, answer, enteredby):

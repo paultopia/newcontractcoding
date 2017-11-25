@@ -5,6 +5,11 @@ from datetime import datetime
 # TODO
 # I NEED TO ADD AUTHENTICATION AND user-getting.  this will probably do it: https://flask-httpauth.readthedocs.io/en/latest/
 
+def list_users():
+    return Users.query(User.lastname).all()
+
+def find_password(username):
+    return Users.query.filter_by(lastname=username).first().password  # stored in clear because assigned randomly and unimportant. not a good practice normally.
 
 def get_questions():
     return Questions.query.order_by(Questions.id).all()
