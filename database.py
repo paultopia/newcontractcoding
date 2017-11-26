@@ -40,7 +40,7 @@ class Users(db.Model):
     lastname = db.Column(db.String(50), primary_key=True)
     email = db.Column(db.Text(), index=True, unique=True)
     password = db.Column(db.Text())  # passwords will be assigned, not user-selected.  login will just be lastname + password, all in lowercase.
-    isadmin = db.Column(db.Boolean())  # solely for purpose of flushing functionality, I'll have one admin page.
+    isadmin = db.Column(db.Boolean())  # I'll need an admin page with functionality to add documents, add users, and flush the in-progress docs.  Maybe also to check status?  that can just be raw sql in psql though.
 
     def __init__(self, lastname, email, password, isadmin):
         self.lastname = lastname
