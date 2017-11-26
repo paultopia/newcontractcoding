@@ -1,6 +1,6 @@
 import bcrypt
 from core import core
-frpm dbops import get_questions, fetch_contract, add_answers, list_users, find_hashed_password
+frpm dbops import get_questions, fetch_contract, add_answers, list_users, find_hashed_password, is_admin
 from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
@@ -20,6 +20,14 @@ def root():
     return "TODO"
 
 @core.route("enter-data")
+@auth.login_required
 def add_data():
     """this route will enter data in the database, then offer user a choice to get another doc or quit."""
     return "TODO"
+
+@core.route("admin")
+@auth.login_required
+def admin():
+    if is_admin(auth.username()):
+        return "TODO: page goes here"
+    return "Not authorized."

@@ -14,14 +14,22 @@ def add_user(lastname, email, clear_password, isadmin=False):
     db.session.commit()
     return lastname
 
+
 def list_users():
-    return Users.query(User.lastname).all()
+    return [x.lastname for x in Users.query(Users.lastname).all()]
+
+
+def is_admin(lastname):
+    return Users.query.get(lastname).isadmin
+
 
 def find_hashed_password(username):
-    return Users.query.filter_by(lastname=username).first().password 
+    return Users.query.filter_by(lastname=username).first().password
+
 
 def get_questions():
     return Questions.query.order_by(Questions.id).all()
+
 
 def mark_contract_live(contract_id):
     contract = Contracts.query.get(contract_id)
