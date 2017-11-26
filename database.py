@@ -5,6 +5,7 @@ class Contracts(db.Model):
     __tablename__ = "contracts"
     id = db.Column(db.Integer, primary_key=True)
     contract = db.Column(db.Text())  # text of K
+    url = db.Column(db.Text())
     inprogress = db.Column(db.Boolean(), nullable=False)  # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.  Adding a NOT NULL constraint to make it easier to select not-in-progress columns by just checking for False, not False or None.
     inprogressstarted = db.Column(db.DateTime())  # last time coding started, for flushing purposes, to enable timeout after an hour.
     firstenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
@@ -12,29 +13,40 @@ class Contracts(db.Model):
     secondenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     secondenteredon = db.Column(db.DateTime())
 
-    def __init__(self):
-        pass  # contracts are going to be added on commandline, not in application code.
+    def __init__(self, contract, url):
+        self.contract = contract
+        self.url = url
+        self.inprogress = False
+        self.inprogressstarted = None
+        self.firstenteredby = None
+        self.firstenteredon = None
+        self.secondenteredby = None
+        self.secondenteredon = None
 
 
 class Questions(db.Model):
     __tablename__ = "questions"
     id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.Text(), index=True, unique=True)
-    validator = db.Column(db.Boolean())  #  if True, then a false answer to this question terminates coding.  implement on client-side.  this is for quick dispatch of non-contract text.  
+    questiontext = db.Column(db.Text(), index=True, unique=True)
+    explanation = db.Column(db.Text())
 
-    def __init__(self):
-        pass  # questions are going to be added on commandline, not in application code.
+    def __init__(self, question, explanation):
+       self.question = question
+       self.explanation = explanation
 
 
 class Users(db.Model):
     __tablename__ = "users"
     lastname = db.Column(db.String(50), primary_key=True)
     email = db.Column(db.Text(), index=True, unique=True)
-    password = db.Column(db.Text())  # will store in clear because this is very unimportant + passwords will be assigned, not user-selected (so no dupe risk).  login will just be lastname + password, all in lowercase.
+    password = db.Column(db.Text())  # passwords will be assigned, not user-selected.  login will just be lastname + password, all in lowercase.
     isadmin = db.Column(db.Boolean())  # solely for purpose of flushing functionality, I'll have one admin page.
 
-    def __init__(self):
-        pass  # users are going to be added on commandline, not in application code.
+    def __init__(self, lastname, email, password, isadmin):
+        self.lastname = lastname
+        self.email = email
+        self.password = password
+        self.isadmin = isadmin
 
 
 class Answers(db.Model):

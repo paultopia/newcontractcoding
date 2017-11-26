@@ -1,14 +1,16 @@
+import bcrypt
 from core import core
-frpm dbops import get_questions, fetch_contract, add_answers, list_users, find_password
+frpm dbops import get_questions, fetch_contract, add_answers, list_users, find_hashed_password
 from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
-@auth.get_password
-def get_pw(lastname):
+@auth.verify_password
+def verify_pw(lastname, password):
     if lastname in list_users():
-        return find_password(lastname)
-    return None
+        hashed_pw = find_hashed_password(lastname)
+        return bcrypt.checkpw(password, hashed_password)
+    return False
 
 @core.route("/")
 @auth.login_required

@@ -1,15 +1,28 @@
+import bcrypt  # NEED TO ACTUALLY INSTALL LIBRARY. TODO
 from core import db
 from database import Contracts, Questions, Users, Answers
 from datetime import datetime
 
+
+# password strategy from https://stackoverflow.com/a/23768422/4386239
+
+# I should just make an admin view with an interface to add other users, and to grab the documents to code from a url somewhere.
+
 # TODO
 # I NEED TO ADD AUTHENTICATION AND user-getting.  this will probably do it: https://flask-httpauth.readthedocs.io/en/latest/
+
+def add_user(lastname, email, clear_password, isadmin=False):
+    hashed_password = bcrypt.hashpw(clear_password, bcrypt.gensalt())
+    user = Users(lastname, email, hashed_password, isadmin)
+    db.session.add(user)
+    db.session.commit()
+    return lastname
 
 def list_users():
     return Users.query(User.lastname).all()
 
-def find_password(username):
-    return Users.query.filter_by(lastname=username).first().password  # stored in clear because assigned randomly and unimportant. not a good practice normally.
+def find_hashed_password(username):
+    return Users.query.filter_by(lastname=username).first().password 
 
 def get_questions():
     return Questions.query.order_by(Questions.id).all()
