@@ -15,6 +15,7 @@ flask-sqlalchemy = "*"
 sqlalchemy = "*"
 flask-httpauth = "*"
 bcrypt = "*"
+requests = "*"
 
 
 [dev-packages]

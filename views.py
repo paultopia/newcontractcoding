@@ -1,6 +1,6 @@
 import bcrypt
 from core import core
-from dbops import get_questions, fetch_contract, add_answers, list_users, find_hashed_password, is_admin, add_user, flush_documents
+import dbops as db
 from flask_httpauth import HTTPBasicAuth
 from flask import render_template, request, url_for
 from functools import wraps
@@ -15,8 +15,8 @@ def properbool(s):   # https://docs.python.org/3/distutils/apiref.html?highlight
 
 @auth.verify_password
 def verify_pw(lastname, password):
-    if lastname in list_users():
-        hashed_pw = find_hashed_password(lastname)
+    if lastname in db.list_users():
+        hashed_pw = db.find_hashed_password(lastname)
         return bcrypt.checkpw(password, hashed_password)
     return False
 
@@ -29,22 +29,22 @@ def verify_pw(lastname, password):
 
 @core.route("/")
 @auth.login_required
-def root():
+def coding():
+    """this route will offer a coding page."""
     lastname = auth.username()
-    """this route will ask for login using flask-httpauth and then offer a coding page, or, if login is me, a coding/admin page."""
     return "TODO"
 
 
 @core.route("/enter-data")
 @auth.login_required
 def add_data():
-    questions = [x.id for x in get_questions()]
+    questions = [x.id for x in db.get_questions()]
     answers = {}
     for q in questions:
         answers[q] = properbool(request.form[q])
-    add_answers(answers, request.form["contract_id"], auth.username())
+    db.add_answers(answers, request.form["contract_id"], auth.username())
     # maybe log here?
-    return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("root"))
+    return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("coding"))
 
 ###########################
 #
@@ -56,7 +56,7 @@ def add_data():
 def must_be_admin(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if is_admin(auth.username()):
+        if db.is_admin(auth.username()):
             return f(*args, **kwargs)
         return "Not authorized."
     return wrapper
@@ -71,11 +71,11 @@ def admin():
     return "TODO: page goes here"
 
 
-@core.route("/add_user")
+@core.route("/db.add_user")
 @must_be_admin
 @auth.login_required
-def add_user_view():
-    ln = add_user(request.form["lastname"],
+def db.add_user_view():
+    ln = db.add_user(request.form["lastname"],
                   request.form["email"],
                   request.form["clear_password"],
                   properbool(request.form["isadmin"]))
@@ -86,7 +86,9 @@ def add_user_view():
 @must_be_admin
 @auth.login_required
 def flush_pending():
-    success = flush_documents()
+    success = db.flush_documents()
     if success:
         return 'Successfully flushed pending documents!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
     return 'Did not successfully flush pending documents. <a href="{}">Try again, or carry out another admin task?</a>'.format(url_for("admin"))
+
+# I'm going to need a setup.py to do initial setup.  I can probably just do heroku run python and then from setup import setup and so forth.  just pass a url for the initial sqlite database for docs and json for users.

@@ -7,6 +7,13 @@ from datetime import datetime
 # I should just make an admin view with an interface to add other users, and to grab the documents to code from a url somewhere.
 
 
+###########################
+#
+# USERS
+#
+###########################
+
+
 def add_user(lastname, email, clear_password, isadmin=False):
     hashed_password = bcrypt.hashpw(clear_password, bcrypt.gensalt())
     user = Users(lastname, email, hashed_password, isadmin)
@@ -27,8 +34,37 @@ def find_hashed_password(username):
     return Users.query.filter_by(lastname=username).first().password
 
 
+def add_users(usersjson):
+    users = [Users(x["lastname"],
+                   x["email"],
+                   bcrypt.hashpw(x["password"], bcrypt.gensalt()),
+                   x["isadmin"]) for x in usersjson]
+    db.session.add_all(users)
+    db.session.commit()
+    return True
+
+###########################
+#
+# QUESTIONS
+#
+###########################
+
+
 def get_questions():
     return Questions.query.order_by(Questions.id).all()
+
+
+def add_questions(questionsjson):
+    questions = [Questions(x["text"], x["explanation"]) for x in questionsjson]
+    db.session.add_all(questions)
+    db.session.commit()
+    return True
+
+###########################
+#
+# CONTRACTS
+#
+###########################
 
 
 def mark_contract_live(contract_id):
@@ -54,18 +90,6 @@ def mark_contract_entered(contract_id, user_name):
         contract.secondenteredby = datetime.utcnow()
     contract.inprogress = False
     db.session.commit()
-    return contract_id
-
-
-def add_answers(answers_from_user, contract_id, user_name):
-    """expect answers_from_user to be a dict of {question_id: choice}
-    but may have to massage types to get them in; type massaging will happen
-    in a view function somewhere before it's passed in here (e.g. converting ids
-    from strings to integers)"""
-    answers = [Answers(x, contract_id, answers_from_user[x], user_name) for x in answers_from_user.keys()]
-    db.session.add_all(answers)
-    db.session.commit()
-    mark_contract_entered(contract_id, user_name)  # this includes a redundant db commit
     return contract_id
 
 
@@ -122,3 +146,28 @@ def flush_documents():
         k.inprogress = False
     db.session.commit()
     return True
+
+
+def add_contracts(contractsjson):
+    contracts = [Contracts(x["contract"], x["url"]) for x in contractsjson]
+    db.session.add_all(contracts)
+    db.session.commit()
+    return True
+
+###########################
+#
+# ANSWERS
+#
+###########################
+
+
+def add_answers(answers_from_user, contract_id, user_name):
+    """expect answers_from_user to be a dict of {question_id: choice}
+    but may have to massage types to get them in; type massaging will happen
+    in a view function somewhere before it's passed in here (e.g. converting ids
+    from strings to integers)"""
+    answers = [Answers(x, contract_id, answers_from_user[x], user_name) for x in answers_from_user.keys()]
+    db.session.add_all(answers)
+    db.session.commit()
+    mark_contract_entered(contract_id, user_name)  # this includes a redundant db commit
+    return contract_id
