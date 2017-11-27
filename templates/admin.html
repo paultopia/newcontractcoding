@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>Contract data entry</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
+    </head>
+    <body>
+
+        <div class="container">
+
+
+            <div class="row">
+                <div class="twelve columns">
+                    <form method="POST" action="{{ url_for('add_user') }}">
+                        <p>
+                            <label for="lastname">Last name:</label>
+                            <input type="text" id="lastname" name="lastname">
+                        </p>
+                        <p>
+                            <label for="email">E-mail:</label>
+                            <input type="text" id="email" name="email">
+                        </p>
+                        <p>
+                            <label for="clear_password">Password:</label>
+                            <input type="text" id="clear_password" name="clear_password">
+                        </p>
+                        
+                        <center><button type="submit" class="button-primary">Add User</button></center>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="twelve columns">
+                    <form method="POST" action="{{ url_for('add_contract') }}">
+                        <p>
+                            <label for="contract">Contract:</label>
+                            <textarea cols="80" rows="20" id="contract" name="contract"></textarea>
+                        </p>
+                        <p>
+                            <label for="url">URL:</label>
+                            <input type="text" id="url" name="url">
+                        </p>
+                       
+                        <center><button type="submit" class="button-primary">Add Contract</button></center>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+
+
+                <div class="row">
+                    <div class="twelve columns">
+                        <form method="POST" action="{{ url_for('flush_pending') }}">
+                   
+                            <center><button type="submit" class="button-primary">Flush Pending Documents</button></center>
+                        </form>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+    </body>
+</html>
