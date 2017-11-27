@@ -6,6 +6,8 @@ class Contracts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     contract = db.Column(db.Text())  # text of K
     url = db.Column(db.Text())
+    firstadded = db.Column(db.Text)  # this is actually going to be a serialized datetime but I won't ever need it programmatically, so I'll leave it as text.
+    firstaddedby = db.Column(db.text)
     inprogress = db.Column(db.Boolean(), nullable=False)  # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.  Adding a NOT NULL constraint to make it easier to select not-in-progress columns by just checking for False, not False or None.
     inprogressstarted = db.Column(db.DateTime())  # last time coding started, for flushing purposes, to enable timeout after an hour.
     firstenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
@@ -13,9 +15,11 @@ class Contracts(db.Model):
     secondenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     secondenteredon = db.Column(db.DateTime())
 
-    def __init__(self, contract, url):
+    def __init__(self, contract, url, firstadded, firstaddedby):
         self.contract = contract
         self.url = url
+        self.firstadded = firstadded
+        self.firstaddedby = firstaddedby
         self.inprogress = False
         self.inprogressstarted = None
         self.firstenteredby = None

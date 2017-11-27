@@ -149,14 +149,14 @@ def flush_documents():
 
 
 def add_contract(contract_as_dict):
-    k = Contracts(contract_as_dict["contract"], contract_as_dict["url"])
+    k = Contracts(contract_as_dict["contract"], contract_as_dict["url"], str(datetime.utcnow()), "admin")
     db.session.add(k)
     db.session.commit()
     return True
 
 
 def add_contracts(contractsjson):
-    contracts = [Contracts(x["contract"], x["url"]) for x in contractsjson]
+    contracts = [Contracts(x["contract"], x["url"], x["firstadded"], x["firstaddedby"]) for x in contractsjson]
     db.session.add_all(contracts)
     db.session.commit()
     return True
