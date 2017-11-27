@@ -31,8 +31,9 @@ def verify_pw(lastname, password):
 @auth.login_required
 def coding():
     """this route will offer a coding page."""
-    lastname = auth.username()
-    return "TODO"
+    user_name = auth.username()
+    data = db.fetch_contract()
+    return render_template("dataentry.html", templatedata=data)
 
 
 @core.route("/enter-data")
@@ -68,17 +69,17 @@ def must_be_admin(f):
 @must_be_admin
 @auth.login_required
 def admin():
-    return "TODO: page goes here"
+    return render_template("admin.html")
 
 
-@core.route("/db.add_user")
+@core.route("/add_user")
 @must_be_admin
 @auth.login_required
-def db.add_user_view():
+def add_user():
     ln = db.add_user(request.form["lastname"],
-                  request.form["email"],
-                  request.form["clear_password"],
-                  properbool(request.form["isadmin"]))
+                     request.form["email"],
+                     request.form["clear_password"],
+                     properbool(request.form["isadmin"]))
     return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))
 
 
@@ -91,4 +92,11 @@ def flush_pending():
         return 'Successfully flushed pending documents!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
     return 'Did not successfully flush pending documents. <a href="{}">Try again, or carry out another admin task?</a>'.format(url_for("admin"))
 
-# I'm going to need a setup.py to do initial setup.  I can probably just do heroku run python and then from setup import setup and so forth.  just pass a url for the initial sqlite database for docs and json for users.
+
+@core.route("/add_contract")
+@must_be_admin
+@auth.login_required
+def add_contract():
+    db.add_contract(request.form["contract"],
+                    request.form["url"])
+    return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))

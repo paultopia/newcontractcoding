@@ -148,6 +148,13 @@ def flush_documents():
     return True
 
 
+def add_contract(contract_as_dict):
+    k = Contracts(contract_as_dict["contract"], contract_as_dict["url"])
+    db.session.add(k)
+    db.session.commit()
+    return True
+
+
 def add_contracts(contractsjson):
     contracts = [Contracts(x["contract"], x["url"]) for x in contractsjson]
     db.session.add_all(contracts)
