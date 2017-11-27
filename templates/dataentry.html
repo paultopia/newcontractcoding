@@ -8,18 +8,42 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='skeleton.css') }}">
     </head>
     <body>
-        <form method="POST" action="{{ url_for('post_to_db') }}">
+        <form method="POST" action="{{ url_for('add_data') }}">
             <div class="container">
                 <div class="row">
                     <div class="twelve columns">
                         <center>
                             <h1>Gowder Contract Data Entry</h1>
                         </center>
-                        <p>Hello, {{ templatedata.student }}</p>
+                        <p>Hello, {{ templatedata.contract.user_name }}. Here's your document!</p>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <pre> {{ templatedata.contract.contract_text }}  <!-- need to format this better/somehow -->
+                        </pre>
+                    </div>
+                </div>
+                {% for question in templatedata.questions %}
+                <div class="row">
+                    <div class="twelve columns">
+                        <p>{{question.questiontext}}</p>
+                        <p>{{question.explanation}}</p>
+                        <p><label for="{{ question.id }}-yes">Yes.</label>
+                            <input type="radio" checked id="{{ question.id }}-yes" name="{{ question.id }}" value="yes">
+                            <label for="{{ question.id }}-no">No.</label>
+                            <input type="radio" id="{{ question.id }}-no" name="{{ question.id }}" value="no">
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
 
-                
+               <div class="row">
+                   <div class="twelve columns">
+                       <input type="hidden" name="contract_id" value="{{ templatedata.contract.contract_id }}">
+                       <center><button type="submit" class="button-primary">Submit contract</button></center>
+                   </div>
+               </div>
                 
                 
                 

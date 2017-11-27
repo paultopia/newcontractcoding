@@ -32,7 +32,9 @@ def verify_pw(lastname, password):
 def coding():
     """this route will offer a coding page."""
     user_name = auth.username()
-    data = db.fetch_contract()
+    questions = db.get_questions()
+    contract = db.fetch_contract(user_name)
+    data = {"questions": questions, "contract": contract}
     return render_template("dataentry.html", templatedata=data)
 
 
@@ -42,8 +44,8 @@ def add_data():
     questions = [x.id for x in db.get_questions()]
     answers = {}
     for q in questions:
-        answers[q] = properbool(request.form[q])
-    db.add_answers(answers, request.form["contract_id"], auth.username())
+        answers[int(q)] = properbool(request.form[q])
+    db.add_answers(answers, int(request.form["contract_id"]), auth.username())
     # maybe log here?
     return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("coding"))
 
