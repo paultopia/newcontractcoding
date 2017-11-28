@@ -16,6 +16,7 @@ sqlalchemy = "*"
 flask-httpauth = "*"
 bcrypt = "*"
 requests = "*"
+flask-markdown = "*"
 
 
 [dev-packages]
