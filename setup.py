@@ -1,6 +1,6 @@
 import dbops
 import requests
-
+from core import db
 
 def add_documents(docsjsonurl):
     dbops.add_contracts(requests.get(docsjsonurl).json())
@@ -22,13 +22,14 @@ def setup(docs_url, questions_url, users_url):
 
 
 def test_setup():
+    db.create_all()
     from json import load
     with open("testcontracts.json") as tc:
         dbops.add_contracts(load(tc))
     with open("testusers.json") as tu:
         dbops.add_users(load(tu))
-    with open("testquestions.json") as tu:
-        dbops.add_questions(load(tu))
+    with open("testquestions.json") as tq:
+        dbops.add_questions(load(tq))
     
 if __name__ == '__main__':
     test_setup()

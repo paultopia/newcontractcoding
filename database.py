@@ -59,7 +59,7 @@ class Answers(db.Model):
     question = db.Column(db.Integer, db.ForeignKey('questions.id'))
     contract = db.Column(db.Integer, db.ForeignKey('contracts.id'))
     enteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
-    answer = db.Column(db.Bool())  # should this be a bool or an integer?
+    answer = db.Column(db.Boolean())  # should this be a bool or an integer?
     # don't need an entered date because can be inferred from enteredby + the enteredon fields in doc database.
 
     def __init__(self, question, contract, answer, enteredby):

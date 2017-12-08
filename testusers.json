@@ -1,2 +1,2 @@
 [{"lastname": "gowder", "email": "paul.gowder@gmail.com", "password": "secret", "isadmin": true},
- {"lastname": "student", "email": "student@paultopia.org", "password": "password", isadmin: false}]
+ {"lastname": "student", "email": "student@paultopia.org", "password": "password", "isadmin": false}]

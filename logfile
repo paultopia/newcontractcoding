@@ -3,3 +3,7 @@ LOG:  database system was shut down at 2017-12-08 14:51:57 EST
 LOG:  MultiXact member wraparound protections are now enabled
 LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
+ERROR:  relation "contracts" does not exist at character 13
+STATEMENT:  INSERT INTO contracts (contract, url, firstadded, firstaddedby, inprogress, inprogressstarted, firstenteredby, firstenteredon, secondenteredby, secondenteredon) VALUES ('this is the text of a (very short) contract.  
+	  this should be on a newline 
+	 and another yo.', 'http://paul-gowder.com', '01/01/01', 'test', false, NULL, NULL, NULL, NULL, NULL) RETURNING contracts.id

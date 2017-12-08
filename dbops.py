@@ -15,7 +15,7 @@ from datetime import datetime
 
 
 def add_user(lastname, email, clear_password, isadmin=False):
-    hashed_password = bcrypt.hashpw(clear_password, bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(clear_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
     user = Users(lastname, email, hashed_password, isadmin)
     db.session.add(user)
     db.session.commit()
@@ -37,7 +37,7 @@ def find_hashed_password(username):
 def add_users(usersjson):
     users = [Users(x["lastname"],
                    x["email"],
-                   bcrypt.hashpw(x["password"], bcrypt.gensalt()),
+                   bcrypt.hashpw(x["password"].encode('utf8'), bcrypt.gensalt()).decode('utf8'),
                    x["isadmin"]) for x in usersjson]
     db.session.add_all(users)
     db.session.commit()

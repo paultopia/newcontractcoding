@@ -17,7 +17,7 @@ def properbool(s):   # https://docs.python.org/3/distutils/apiref.html?highlight
 def verify_pw(lastname, password):
     if lastname in db.list_users():
         hashed_pw = db.find_hashed_password(lastname)
-        return bcrypt.checkpw(password, hashed_password)
+        return bcrypt.checkpw(password, hashed_password) # not sure whether this wants bytes or not, might have to call .encode('utf8') on either or both 
     return False
 
 ###########################
