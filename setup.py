@@ -1,17 +1,17 @@
-import dbops as db
+import dbops
 import requests
 
 
 def add_documents(docsjsonurl):
-    db.add_contracts(requests.get(docsjsonurl).json())
+    dbops.add_contracts(requests.get(docsjsonurl).json())
 
 
 def add_questions(questionsjsonurl):
-    db.add_questions(requests.get(questionsjsonurl).json())
+    dbops.add_questions(requests.get(questionsjsonurl).json())
 
 
 def add_users(usersjsonurl):
-    db.add_questions(requests.get(usersjsonurl).json())
+    dbops.add_users(requests.get(usersjsonurl).json())
 
 
 def setup(docs_url, questions_url, users_url):
@@ -19,3 +19,14 @@ def setup(docs_url, questions_url, users_url):
     add_questions(questions_url)
     add_users(users_url)
     print("set up!")
+
+
+def test_setup():
+    from json import load
+    with open("testcontracts.json") as tc:
+        dbops.add_contracts(load(tc))
+    with open("testusers.json") as tu:
+        dbops.add_users(load(tu))
+    with open("testquestions.json") as tu:
+        dbops.add_questions(load(tu))
+    
