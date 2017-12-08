@@ -30,3 +30,6 @@ def test_setup():
     with open("testquestions.json") as tu:
         dbops.add_questions(load(tu))
     
+if __name__ == '__main__':
+    test_setup()
+    print("setup!")
