@@ -47,7 +47,7 @@ class Users(db.Model):
     isadmin = db.Column(db.Boolean())  # I'll need an admin page with functionality to add documents, add users, and flush the in-progress docs.  Maybe also to check status?  that can just be raw sql in psql though.
 
     def __init__(self, lastname, email, password, isadmin):
-        self.lastname = lastname
+        self.lastname = lastname.lower()
         self.email = email
         self.password = password
         self.isadmin = isadmin

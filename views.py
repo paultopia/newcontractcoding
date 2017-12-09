@@ -15,8 +15,9 @@ def properbool(s):   # https://docs.python.org/3/distutils/apiref.html?highlight
 
 @auth.verify_password
 def verify_pw(lastname, password):
-    if lastname in db.list_users():
-        hashed_pw = db.find_hashed_password(lastname)
+    ln = lastname.lower()
+    if ln in db.list_users():
+        hashed_pw = db.find_hashed_password(ln)
         return bcrypt.checkpw(password.encode('utf8'), hashed_pw.encode('utf8'))  # not sure whether this wants bytes or not, might have to call .encode('utf8') on either or both 
     return False
 
@@ -77,17 +78,17 @@ def admin():
     return render_template("admin.html")
 
 
-@core.route("/add_user", methods=['POST'])
+@core.route("/add_user", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
 @must_be_admin
 @auth.login_required
 def add_user():
     ln = db.add_user(request.form["lastname"],
                      request.form["email"],
                      request.form["clear_password"],
-                     properbool(request.form["isadmin"]))
+                     False)
     return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))
 
-
+# NOT YET TESTED MEANINGFULLY
 @core.route("/flush_pending", methods=['POST'])
 @must_be_admin
 @auth.login_required
