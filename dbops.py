@@ -23,7 +23,7 @@ def add_user(lastname, email, clear_password, isadmin=False):
 
 
 def list_users():
-    return [x.lastname for x in Users.query(Users.lastname).all()]
+    return [x.lastname for x in Users.query.order_by(Users.lastname).all()]
 
 
 def is_admin(lastname):
@@ -51,7 +51,7 @@ def add_users(usersjson):
 
 
 def get_questions():
-    return [{"question_id": str(question.id),
+    return [{"question_id": str(x.id),
              "questiontext": x.questiontext,
              "explanation": x.explanation} for x in Questions.query.order_by(Questions.id).all()]
 
