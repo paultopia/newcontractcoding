@@ -20,8 +20,9 @@
                 </div>
                 <div class="row">
                     <div class="twelve columns">
-                        <pre> {{ templatedata.contract.contract_text|markdown }}  <!-- need to format this better/somehow -->
-                        </pre>
+                        <hr>
+                         {{ templatedata.contract.contract_text|markdown }}  <!-- need to format this better/somehow -->
+                    <hr>
                     </div>
                 </div>
                 {% for question in templatedata.questions %}

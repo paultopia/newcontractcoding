@@ -30,3 +30,6 @@ STATEMENT:  drop table questions;
 ERROR:  duplicate key value violates unique constraint "users_pkey"
 DETAIL:  Key (lastname)=(gowder) already exists.
 STATEMENT:  INSERT INTO users (lastname, email, password, isadmin) VALUES ('gowder', 'paul.gowder@gmail.com', '$2b$12$ab.ymxKC6hkuGpo5hth2SuivnNbjO3XcAPidj6rcjAQTTaI9jMiES', true)
+ERROR:  null value in column "inprogress" violates not-null constraint
+DETAIL:  Failing row contains (3, a contract, http://google.com, null, null, null, null, null, null, null, null).
+STATEMENT:  insert into contracts (contract, url) values ('a contract', 'http://google.com');

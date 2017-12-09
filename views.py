@@ -88,7 +88,6 @@ def add_user():
                      False)
     return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))
 
-# NOT YET TESTED MEANINGFULLY
 @core.route("/flush_pending", methods=['POST'])
 @must_be_admin
 @auth.login_required
