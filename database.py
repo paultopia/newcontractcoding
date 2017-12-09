@@ -34,8 +34,8 @@ class Questions(db.Model):
     questiontext = db.Column(db.Text(), index=True, unique=True)
     explanation = db.Column(db.Text())
 
-    def __init__(self, question, explanation):
-       self.question = question
+    def __init__(self, questiontext, explanation):
+       self.questiontext = questiontext
        self.explanation = explanation
 
 

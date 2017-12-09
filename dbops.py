@@ -111,7 +111,7 @@ def fetch_contract(user_name):
     """
     contract = Contracts.query.filter_by(inprogress=False, firstenteredby=None).first()
     if contract is None:
-        contract = Contracts.query.filter(Contracts.name != user_name).filter_by(inprogress=False, secondenteredby=None).first()
+        contract = Contracts.query.filter(Contracts.firstenteredby != user_name).filter_by(inprogress=False, secondenteredby=None).first()
         if contract is None:
             # TODO: trigger some kind of log or other notification to me that this user doesn't have anything to do.  then I can go in and flush in progress, nag other people to catch up, etc.
             return None

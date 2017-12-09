@@ -27,7 +27,7 @@
                 {% for question in templatedata.questions %}
                 <div class="row">
                     <div class="twelve columns">
-                        <p>{{question.questiontext}} DEBUG QUESTION field: {{ question }}</p>
+                        <p>{{question.questiontext}}</p>
                         <p>{{question.explanation}}</p>
                         <p><label for="{{ question.question_id }}-yes">Yes.</label>
                             <input type="radio" checked id="{{ question.question_id }}-yes" name="{{ question.question_id }}" value="yes">

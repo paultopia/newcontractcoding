@@ -20,3 +20,13 @@ STATEMENT:  select from contracts where contract_id = 4;
 ERROR:  column contracts.contract_id does not exist at character 29
 HINT:  Perhaps you meant to reference the column "contracts.contract".
 STATEMENT:  select from contracts where contracts.contract_id = 4;
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  cannot drop table questions because other objects depend on it
+DETAIL:  constraint answers_question_fkey on table answers depends on table questions
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+STATEMENT:  drop table questions;
+ERROR:  duplicate key value violates unique constraint "users_pkey"
+DETAIL:  Key (lastname)=(gowder) already exists.
+STATEMENT:  INSERT INTO users (lastname, email, password, isadmin) VALUES ('gowder', 'paul.gowder@gmail.com', '$2b$12$ab.ymxKC6hkuGpo5hth2SuivnNbjO3XcAPidj6rcjAQTTaI9jMiES', true)

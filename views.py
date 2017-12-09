@@ -34,8 +34,11 @@ def coding():
     user_name = auth.username()
     questions = db.get_questions()
     contract = db.fetch_contract(user_name)
-    data = {"questions": questions, "contract": contract}
-    return render_template("dataentry.html", templatedata=data)
+    if contract:
+        data = {"questions": questions, "contract": contract}
+        return render_template("dataentry.html", templatedata=data)
+    else:
+        return "I don't have a contract for you to enter data on right now. Please contact Gowder and let him know this happened."
 
 
 @core.route("/enter-data", methods=['POST'])
@@ -99,6 +102,6 @@ def flush_pending():
 @must_be_admin
 @auth.login_required
 def add_contract():
-    db.add_contract(request.form["contract"],
-                    request.form["url"])
-    return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))
+    contract = {"contract": request.form["contract"], "url": request.form["url"]}
+    db.add_contract(contract)
+    return 'Successfully added a contract!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
