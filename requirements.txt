@@ -8,6 +8,7 @@ flask-heroku==0.1.9
 Flask-HTTPAuth==3.2.3
 Flask-Markdown==0.3
 Flask-SQLAlchemy==2.3.2
+Flask-Testing==0.6.2
 gunicorn==19.7.1
 idna==2.6
 itsdangerous==0.24

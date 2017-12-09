@@ -17,6 +17,7 @@ flask-httpauth = "*"
 bcrypt = "*"
 requests = "*"
 flask-markdown = "*"
+flask-testing = "*"
 
 
 [dev-packages]
