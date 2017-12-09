@@ -38,10 +38,10 @@ def coding():
     return render_template("dataentry.html", templatedata=data)
 
 
-@core.route("/enter-data")
+@core.route("/enter-data", methods=['POST'])
 @auth.login_required
 def add_data():
-    questions = [x.id for x in db.get_questions()]
+    questions = [x["question_id"] for x in db.get_questions()]
     answers = {}
     for q in questions:
         answers[int(q)] = properbool(request.form[q])
@@ -74,7 +74,7 @@ def admin():
     return render_template("admin.html")
 
 
-@core.route("/add_user")
+@core.route("/add_user", methods=['POST'])
 @must_be_admin
 @auth.login_required
 def add_user():
@@ -85,7 +85,7 @@ def add_user():
     return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))
 
 
-@core.route("/flush_pending")
+@core.route("/flush_pending", methods=['POST'])
 @must_be_admin
 @auth.login_required
 def flush_pending():
@@ -95,7 +95,7 @@ def flush_pending():
     return 'Did not successfully flush pending documents. <a href="{}">Try again, or carry out another admin task?</a>'.format(url_for("admin"))
 
 
-@core.route("/add_contract")
+@core.route("/add_contract", methods=['POST'])
 @must_be_admin
 @auth.login_required
 def add_contract():

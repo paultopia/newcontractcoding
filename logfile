@@ -10,3 +10,13 @@ STATEMENT:  INSERT INTO contracts (contract, url, firstadded, firstaddedby, inpr
 LOG:  unexpected EOF on client connection with an open transaction
 LOG:  unexpected EOF on client connection with an open transaction
 LOG:  unexpected EOF on client connection with an open transaction
+LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  insert or update on table "contracts" violates foreign key constraint "contracts_secondenteredby_fkey"
+DETAIL:  Key (secondenteredby)=(2017-12-09 02:12:48.653455) is not present in table "users".
+STATEMENT:  UPDATE contracts SET inprogress=false, firstenteredby='gowder', secondenteredby='2017-12-09T02:12:48.653455'::timestamp WHERE contracts.id = 4
+ERROR:  column "contract_id" does not exist at character 29
+HINT:  Perhaps you meant to reference the column "contracts.contract".
+STATEMENT:  select from contracts where contract_id = 4;
+ERROR:  column contracts.contract_id does not exist at character 29
+HINT:  Perhaps you meant to reference the column "contracts.contract".
+STATEMENT:  select from contracts where contracts.contract_id = 4;

@@ -27,12 +27,12 @@
                 {% for question in templatedata.questions %}
                 <div class="row">
                     <div class="twelve columns">
-                        <p>{{question.questiontext}}</p>
+                        <p>{{question.questiontext}} DEBUG QUESTION field: {{ question }}</p>
                         <p>{{question.explanation}}</p>
-                        <p><label for="{{ question.id }}-yes">Yes.</label>
-                            <input type="radio" checked id="{{ question.id }}-yes" name="{{ question.id }}" value="yes">
-                            <label for="{{ question.id }}-no">No.</label>
-                            <input type="radio" id="{{ question.id }}-no" name="{{ question.id }}" value="no">
+                        <p><label for="{{ question.question_id }}-yes">Yes.</label>
+                            <input type="radio" checked id="{{ question.question_id }}-yes" name="{{ question.question_id }}" value="yes">
+                            <label for="{{ question.question_id }}-no">No.</label>
+                            <input type="radio" id="{{ question.question_id }}-yes" name="{{ question.question_id }}" value="no">
                         </p>
                     </div>
                 </div>

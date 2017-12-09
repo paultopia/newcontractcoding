@@ -89,7 +89,7 @@ def mark_contract_entered(contract_id, user_name):
         contract.secondenteredon = datetime.utcnow()
     else:
         contract.firstenteredby = user_name
-        contract.secondenteredby = datetime.utcnow()
+        contract.firstenteredon = datetime.utcnow()
     contract.inprogress = False
     db.session.commit()
     return contract_id
