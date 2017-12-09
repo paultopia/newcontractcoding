@@ -3,7 +3,8 @@ import dbops
 from flask_testing import TestCase
 from core import db
 from json import load
-
+# http://pythonhosted.org/Flask-Testing/
+# http://pythontesting.net/framework/unittest/unittest-introduction/
 
 class TestBase(TestCase):
 
