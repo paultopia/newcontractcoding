@@ -1,6 +1,6 @@
 import bcrypt
 from core import core
-import dbops as db
+import dbops
 from flask_httpauth import HTTPBasicAuth
 from flask import render_template, request, url_for
 from functools import wraps
@@ -16,8 +16,8 @@ def properbool(s):   # https://docs.python.org/3/distutils/apiref.html?highlight
 @auth.verify_password
 def verify_pw(lastname, password):
     ln = lastname.lower()
-    if ln in db.list_users():
-        hashed_pw = db.find_hashed_password(ln)
+    if ln in dbops.list_users():
+        hashed_pw = dbops.find_hashed_password(ln)
         return bcrypt.checkpw(password.encode('utf8'), hashed_pw.encode('utf8'))  # not sure whether this wants bytes or not, might have to call .encode('utf8') on either or both 
     return False
 
@@ -33,8 +33,8 @@ def verify_pw(lastname, password):
 def coding():
     """this route will offer a coding page."""
     user_name = auth.username()
-    questions = db.get_questions()
-    contract = db.fetch_contract(user_name)
+    questions = dbops.get_questions()
+    contract = dbops.fetch_contract(user_name)
     if contract:
         data = {"questions": questions, "contract": contract}
         return render_template("dataentry.html", templatedata=data)
@@ -45,11 +45,11 @@ def coding():
 @core.route("/enter-data", methods=['POST'])
 @auth.login_required
 def add_data():
-    questions = [x["question_id"] for x in db.get_questions()]
+    questions = [x["question_id"] for x in dbops.get_questions()]
     answers = {}
     for q in questions:
         answers[int(q)] = properbool(request.form[q])
-    db.add_answers(answers, int(request.form["contract_id"]), auth.username())
+    dbops.add_answers(answers, int(request.form["contract_id"]), auth.username())
     # maybe log here?
     return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("coding"))
 
@@ -63,7 +63,7 @@ def add_data():
 def must_be_admin(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        if db.is_admin(auth.username()):
+        if dbops.is_admin(auth.username()):
             return f(*args, **kwargs)
         return "Not authorized."
     return wrapper
@@ -82,7 +82,7 @@ def admin():
 @must_be_admin
 @auth.login_required
 def add_user():
-    ln = db.add_user(request.form["lastname"],
+    ln = dbops.add_user(request.form["lastname"],
                      request.form["email"],
                      request.form["clear_password"],
                      False)
@@ -93,7 +93,7 @@ def add_user():
 @must_be_admin
 @auth.login_required
 def flush_pending():
-    success = db.flush_documents()
+    success = dbops.flush_documents()
     if success:
         return 'Successfully flushed pending documents!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
     return 'Did not successfully flush pending documents. <a href="{}">Try again, or carry out another admin task?</a>'.format(url_for("admin"))
@@ -104,5 +104,5 @@ def flush_pending():
 @auth.login_required
 def add_contract():
     contract = {"contract": request.form["contract"], "url": request.form["url"]}
-    db.add_contract(contract)
+    dbops.add_contract(contract)
     return 'Successfully added a contract!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))

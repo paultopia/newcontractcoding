@@ -27,6 +27,11 @@
                             <h1>Gowder Contract Data Entry</h1>
                         </center>
                         <p>Hello, {{ templatedata.contract.user_name }}. Here's your document!</p>
+
+                        <p>
+                            If the contract is formatted badly, you might be able to get the original <a href="{{ templatedata.contract.contract_url }}" target="_blank">here</a>.
+                        </p>
+
                     </div>
                 </div>
                 <div class="row">
@@ -39,6 +44,7 @@
                 {% for question in templatedata.questions %}
                 <div class="row">
                     <div class="twelve columns">
+                        
                         <p>{{question.questiontext}} (<a href="#" onclick="toggle('{{ question.question_id }}-question'); return false;">explanation?</a>)</p>
                         <p id="{{ question.question_id }}-question" style="display:none;">{{question.explanation}}</p>
                         <p><label for="{{ question.question_id }}-yes">Yes.</label>
@@ -46,6 +52,7 @@
                             <label for="{{ question.question_id }}-no">No.</label>
                             <input type="radio" id="{{ question.question_id }}-yes" name="{{ question.question_id }}" value="no">
                         </p>
+                        <hr>
                     </div>
                 </div>
                 {% endfor %}

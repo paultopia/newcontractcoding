@@ -116,7 +116,7 @@ def fetch_contract(user_name):
             # TODO: trigger some kind of log or other notification to me that this user doesn't have anything to do.  then I can go in and flush in progress, nag other people to catch up, etc.
             return None
     mark_contract_live(contract.id)
-    return {"contract_id": str(contract.id), "contract_text": contract.contract, "user_name": user_name}
+    return {"contract_id": str(contract.id), "contract_url": contract.url, "contract_text": contract.contract, "user_name": user_name}
 
 
 def hours_ago(now, then):
