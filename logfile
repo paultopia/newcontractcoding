@@ -36,3 +36,27 @@ STATEMENT:  insert into contracts (contract, url) values ('a contract', 'http://
 ERROR:  duplicate key value violates unique constraint "users_pkey"
 DETAIL:  Key (lastname)=(gowder) already exists.
 STATEMENT:  INSERT INTO users (lastname, email, password, isadmin) VALUES ('gowder', 'paul.gowder@gmail.com', '$2b$12$fvSl3sNBuYn/11QUZSYxEOYL241Azk2abt5W/pIFydoqHiLh3zceu', true)
+ERROR:  invalid input syntax for integer: "contract"
+CONTEXT:  COPY contracts, line 1, column id: "contract"
+STATEMENT:  COPY  contracts FROM STDIN with (format csv);
+ERROR:  invalid input syntax for integer: "id"
+CONTEXT:  COPY contracts, line 1, column id: "id"
+STATEMENT:  COPY  contracts FROM STDIN with (format csv);
+ERROR:  invalid input syntax for integer: "id"
+CONTEXT:  COPY contracts, line 1, column id: "id"
+STATEMENT:  COPY  contracts FROM STDIN with (format csv);
+ERROR:  duplicate key value violates unique constraint "contracts_pkey"
+DETAIL:  Key (id)=(1) already exists.
+STATEMENT:  INSERT INTO contracts (contract, url, firstadded, firstaddedby, inprogress, inprogressstarted, firstenteredby, firstenteredon, secondenteredby, secondenteredon) VALUES ('this is the text of a (very short) contract.  
+	  this should be on a newline 
+	 and another yo.', 'http://paul-gowder.com', '01/01/01', 'test', false, NULL, NULL, NULL, NULL, NULL) RETURNING contracts.id
+ERROR:  invalid input syntax for integer: "this is a word"
+CONTEXT:  COPY contracts, line 1, column id: "this is a word"
+STATEMENT:  COPY  contracts FROM STDIN with (format csv);
+ERROR:  syntax error at or near "d" at character 1
+STATEMENT:  d+ contracts
+	;
+ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, this is a word, http://foo.bar, never, test, f, null, null, null, null, null).
+CONTEXT:  COPY contracts, line 1: ",this is a word,http://foo.bar,never,test,f,,,,,"
+STATEMENT:  COPY  contracts FROM STDIN with (format csv);
