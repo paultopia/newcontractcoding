@@ -150,6 +150,15 @@ def flush_documents():
     return True
 
 
+def force_flush_documents():
+    """flush all contracts, regardless of time"""
+    contracts = Contracts.query.order_by(Contracts.id).all()
+    for k in contracts:
+        k.inprogress = False
+    db.session.commit()
+    return True
+
+
 def add_contract(contract_as_dict):
     k = Contracts(contract_as_dict["contract"], contract_as_dict["url"], str(datetime.utcnow()), "admin")
     db.session.add(k)

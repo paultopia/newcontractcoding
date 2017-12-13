@@ -13,7 +13,7 @@ def setUpModule():
         dbops.add_contracts(load(tc))
     with open("testusers.json") as tu:
         dbops.add_users(load(tu))
-    with open("testquestions.json") as tq:
+    with open("questions.json") as tq:
         dbops.add_questions(load(tq))
 
 def tearDownModule():
@@ -33,9 +33,30 @@ class TestDbSetup(TestBase):
     def test_list_users(self):
         self.assertEqual(dbops.list_users(), ['gowder', 'student'])
 
-    def test_fail_users(self):
-        self.assertEqual(dbops.list_users(), ['gowderNOT', 'student'])
+    def test_get_questions(self):
+        q = dbops.get_questions()[0]
+        self.assertEqual(q["question_id"], '1')
+        self.assertEqual(q["questiontext"], "Is this a contract that purports to change or specify an individual's rights or obligations?")
 
+    def test_get_contracts(self):
+        gk1 = dbops.fetch_contract('gowder')
+        gk2 = dbops.fetch_contract('gowder')
+        gk3 = dbops.fetch_contract('gowder')
+        sk1 = dbops.fetch_contract('student')
+        self.assertEqual(gk1["contract_url"], "http://paul-gowder.com")
+        self.assertEqual(gk2["contract_url"], "http://gowder.io")
+        self.assertNotEqual(gk1, gk2)
+        self.assertIsNone(gk3)
+        self.assertIsNone(sk1)
+        dbops.force_flush_documents()
+        sk2 = dbops.fetch_contract('student')
+        self.assertIsNotNone(sk2)
+        dbops.force_flush_documents()
+
+class TestViewAccess(TestBase):
+    def test_main_page_unauthorized(self):
+        self.assertEqual(self.client.get("/").status_code, 401)
+        print(self.client.get("/", headers={"foo": "bar"}))
 
 if __name__ == '__main__':
     unittest.main()

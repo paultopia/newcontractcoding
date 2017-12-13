@@ -8,7 +8,8 @@ class Contracts(db.Model):
     url = db.Column(db.Text())
     firstadded = db.Column(db.Text())  # this is actually going to be a serialized datetime but I won't ever need it programmatically, so I'll leave it as text.
     firstaddedby = db.Column(db.Text())
-    inprogress = db.Column(db.Boolean(), nullable=False)  # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.  Adding a NOT NULL constraint to make it easier to select not-in-progress columns by just checking for False, not False or None.
+    inprogress = db.Column(db.Boolean(), nullable=False)
+    # flag for state of currently being entered, to avoid accidental duplication.  Need to have a timeout/flush mechanism that cancels inprogress if not entered.  Adding a NOT NULL constraint to make it easier to select not-in-progress columns by just checking for False, not False or None.
     inprogressstarted = db.Column(db.DateTime())  # last time coding started, for flushing purposes, to enable timeout after an hour.
     firstenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     firstenteredon = db.Column(db.DateTime())
