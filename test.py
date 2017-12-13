@@ -56,7 +56,8 @@ class TestDbSetup(TestBase):
 class TestViewAccess(TestBase):
     def test_main_page_unauthorized(self):
         self.assertEqual(self.client.get("/").status_code, 401)
-        print(self.client.get("/", headers={"foo": "bar"}))
+        loggedin = self.client.get("/", headers={"Authorization": "Basic Z293ZGVyOnNlY3JldA=="}) # this is the gowder code--- a base64 string of username + : + password I think, judging by this: https://gist.github.com/jarus/1160696 --- gotten by inspecting logged-in request in chrome devtools.
+        self.assertEqual(loggedin.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
