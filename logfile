@@ -72,3 +72,8 @@ CONTEXT:  COPY contracts, line 1: "1,"Terms of Service - GantryWorks Inc.
 	Terms of Service
 	Updated Octobe..."
 STATEMENT:  COPY  contracts FROM STDIN with (format csv);
+ERROR:  duplicate key value violates unique constraint "contracts_pkey"
+DETAIL:  Key (id)=(1) already exists.
+STATEMENT:  INSERT INTO contracts (contract, url, firstadded, firstaddedby, inprogress, inprogressstarted, firstenteredby, firstenteredon, secondenteredby, secondenteredon) VALUES ('this is the text of a (very short) contract.  
+	  this should be on a newline 
+	 and another yo.', 'http://paul-gowder.com', '01/01/01', 'test', false, NULL, NULL, NULL, NULL, NULL) RETURNING contracts.id
