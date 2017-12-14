@@ -77,3 +77,13 @@ DETAIL:  Key (id)=(1) already exists.
 STATEMENT:  INSERT INTO contracts (contract, url, firstadded, firstaddedby, inprogress, inprogressstarted, firstenteredby, firstenteredon, secondenteredby, secondenteredon) VALUES ('this is the text of a (very short) contract.  
 	  this should be on a newline 
 	 and another yo.', 'http://paul-gowder.com', '01/01/01', 'test', false, NULL, NULL, NULL, NULL, NULL) RETURNING contracts.id
+ERROR:  invalid input syntax for integer: "gowder" at character 571
+STATEMENT:  SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts 
+	WHERE contracts.id = 'gowder' 
+	 LIMIT 1
+ERROR:  invalid input syntax for integer: "gowder" at character 571
+STATEMENT:  SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts 
+	WHERE contracts.id = 'gowder' 
+	 LIMIT 1

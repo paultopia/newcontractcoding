@@ -98,12 +98,11 @@ class TestAddDoc(TestStateful):
 
     def test_add_document(self):  # should switch to do this from student
         rsp = self.client.post("/enter-data", headers=gowder_auth, data={"1": "no", "contract_id": "1"})
-        answerlist = dbops.get_answers_for_contract(1)
+        answerlist = dbops.pick_contract(1).answers
         self.assertEqual({answerlist[0].id: answerlist[0].answer,
                           answerlist[1].id: answerlist[1].answer},
                          {1: False, 2: True})
         self.assertEqual(rsp.data, b'To enter another contract, <a href="/">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>')
-
 
 
 if __name__ == '__main__':

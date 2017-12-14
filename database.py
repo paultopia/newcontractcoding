@@ -15,6 +15,7 @@ class Contracts(db.Model):
     firstenteredon = db.Column(db.DateTime())
     secondenteredby = db.Column(db.String(50), db.ForeignKey('users.lastname'))
     secondenteredon = db.Column(db.DateTime())
+    answers = db.relationship("Answers")
 
     def __init__(self, contract, url, firstadded, firstaddedby):
         self.contract = contract

@@ -197,8 +197,9 @@ def add_answers(answers_from_user, contract_id, user_name):
 ###########################
 
 
-def get_answers_for_contract(contract_id):
-    return Answers.query.filter_by(contract=contract_id).all()
-
 def get_all_answers():
     return Answers.query.order_by(Answers.id).all()
+
+
+def pick_contract(contracts_id):
+    return Contracts.query.filter_by(id=contracts_id).first()
