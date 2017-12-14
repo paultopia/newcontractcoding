@@ -105,5 +105,6 @@ class TestAddDoc(TestStateful):
         self.assertEqual(rsp.data, b'To enter another contract, <a href="/">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>')
 
 
+
 if __name__ == '__main__':
     unittest.main()
