@@ -1,5 +1,6 @@
 import bcrypt
 import csv
+import os
 from core import db
 from database import Contracts, Questions, Users, Answers
 from datetime import datetime
@@ -207,18 +208,46 @@ def pick_contract(contract_id):
     return Contracts.query.get(contract_id)
 
 
-def build_csv_string():  # THIS REALLY NEEDS TESTING especially on the ordering stuff, with a full pile of data so I don't blow it up.
+###########################
+#
+# CSV FORMAT DATA OUTPUT
+#
+###########################
+
+# all this stuff needs testing especially on the ordering stuff, with a full pile of data so I don't blow it up
+
+def _header_row():
     questions = [x.questiontext for x in Questions.query.order_by(Questions.id).all()]
     kcols = ["contract", "url", "firstadded", "firstaddedby", "firstenteredby", "firstenteredon", "secondenteredby", "secondenteredon"]
-    headers = kcols + questions
+    return kcols + questions
+
+
+def _contract_row(contract_id):
+    contract = pick_contract(contract_id)
+    kfields = [contract.contract, contract.url, contract.firstadded, contract.firstaddedby, contract.firstenteredon, contract.secondenteredby, contract.secondenteredon]
+    answers = [x.answer for x in sorted(contract.answers, key=lambda y: y.question)]
+    return kfields + answers
+
+
+def _build_csv(filelike): 
     rows = Contracts.query.count()
-    out = StringIO()
-    writer = csv.writer(out)
-    writer.writerow(headers)
+    writer = csv.writer(filelike)
+    writer.writerow(_header_row())
     for contract_id in range(1, rows + 1):
-        contract = pick_contract(contract_id)
-        kfields = [contract.contract, contract.url, contract.firstadded, contract.firstaddedby, contract.firstenteredon, contract.secondenteredby, contract.secondenteredon]
-        answers = [x.answer for x in sorted(contract.answers, key=lambda y: y.question)]
-        writer.writerow(kfields + answers)
-    return out.getvalue()
+        writer.writerow(_contract_row(contract_id))
+    return None
     
+def csv_file(full_path_to_file):
+    dir = os.path.dirname(full_path_to_file)
+    if not os.path.exists (dir):
+        os.makedirs(dir)  
+        # this has a race condition, but I don't care, since I'll be the only one getting this and there's only one of me. Mitigtation strategy if I start to care suggested here: https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist
+    with open(full_path_to_file, 'w') as out:  # overwriting but don't care.
+        _build_csv(out)
+    return full_path_to_file
+
+    
+def csv_string():
+    with StringIO() as out:
+        _build_csv(out)
+        return out.getvalue()
