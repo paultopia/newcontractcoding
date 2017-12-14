@@ -6,6 +6,9 @@ from json import load
 # http://pythonhosted.org/Flask-Testing/
 # http://pythontesting.net/framework/unittest/unittest-introduction/
 
+gowder_auth = {"Authorization": "Basic Z293ZGVyOnNlY3JldA=="}
+# this is the gowder code--- a base64 string of username + : + password I think, judging by this: https://gist.github.com/jarus/1160696 --- gotten by inspecting logged-in request in chrome devtools.
+
 
 def setUpModule():
     db.create_all()
@@ -15,6 +18,7 @@ def setUpModule():
         dbops.add_users(load(tu))
     with open("questions.json") as tq:
         dbops.add_questions(load(tq))
+
 
 def tearDownModule():
     db.session.remove()
@@ -30,8 +34,6 @@ class TestBase(TestCase):
 
 
 class TestDbSetup(TestBase):
-    def test_list_users(self):
-        self.assertEqual(dbops.list_users(), ['gowder', 'student'])
 
     def test_get_questions(self):
         q = dbops.get_questions()[0]
@@ -53,11 +55,20 @@ class TestDbSetup(TestBase):
         self.assertIsNotNone(sk2)
         dbops.force_flush_documents()
 
+
 class TestViewAccess(TestBase):
     def test_main_page_unauthorized(self):
         self.assertEqual(self.client.get("/").status_code, 401)
-        loggedin = self.client.get("/", headers={"Authorization": "Basic Z293ZGVyOnNlY3JldA=="}) # this is the gowder code--- a base64 string of username + : + password I think, judging by this: https://gist.github.com/jarus/1160696 --- gotten by inspecting logged-in request in chrome devtools.
+        loggedin = self.client.get("/", headers=gowder_auth)
         self.assertEqual(loggedin.status_code, 200)
+
+
+class TestDataFromView(TestBase):
+    def test_add_user(self):
+        rsp = self.client.post("/add_user", headers=gowder_auth, data={"lastname": "stub", "email": "none@none.net", "clear_password": "0000"})
+        self.assertEqual(rsp.data, b'Successfully added stub!  <a href="/admin">Carry out another admin task?</a>')
+        self.assertEqual(dbops.list_users(), ['gowder', 'stub', 'student'])
+
 
 if __name__ == '__main__':
     unittest.main()
