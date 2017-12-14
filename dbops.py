@@ -1,7 +1,9 @@
 import bcrypt
+import csv
 from core import db
 from database import Contracts, Questions, Users, Answers
 from datetime import datetime
+from io import StringIO
 
 
 # I should just make an admin view with an interface to add other users, and to grab the documents to code from a url somewhere.
@@ -201,5 +203,22 @@ def get_all_answers():
     return Answers.query.order_by(Answers.id).all()
 
 
-def pick_contract(contracts_id):
-    return Contracts.query.filter_by(id=contracts_id).first()
+def pick_contract(contract_id):
+    return Contracts.query.get(contract_id)
+
+
+def build_csv_string():  # THIS REALLY NEEDS TESTING especially on the ordering stuff, with a full pile of data so I don't blow it up.
+    questions = [x.questiontext for x in Questions.query.order_by(Questions.id).all()]
+    kcols = ["contract", "url", "firstadded", "firstaddedby", "firstenteredby", "firstenteredon", "secondenteredby", "secondenteredon"]
+    headers = kcols + questions
+    rows = Contracts.query.count()
+    out = StringIO()
+    writer = csv.writer(out)
+    writer.writerow(headers)
+    for contract_id in range(1, rows + 1):
+        contract = pick_contract(contract_id)
+        kfields = [contract.contract, contract.url, contract.firstadded, contract.firstaddedby, contract.firstenteredon, contract.secondenteredby, contract.secondenteredon]
+        answers = [x.answer for x in sorted(contract.answers, key=lambda y: y.question)]
+        writer.writerow(kfields + answers)
+    return out.getvalue()
+    
