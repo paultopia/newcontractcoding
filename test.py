@@ -62,12 +62,19 @@ class TestViewAccess(TestBase):
         loggedin = self.client.get("/", headers=gowder_auth)
         self.assertEqual(loggedin.status_code, 200)
 
+## need to test that student login can't get admin routes
+
 
 class TestDataFromView(TestBase):
     def test_add_user(self):
         rsp = self.client.post("/add_user", headers=gowder_auth, data={"lastname": "stub", "email": "none@none.net", "clear_password": "0000"})
         self.assertEqual(rsp.data, b'Successfully added stub!  <a href="/admin">Carry out another admin task?</a>')
         self.assertEqual(dbops.list_users(), ['gowder', 'stub', 'student'])
+    
+    def test_add_document(self):
+        rsp = self.client.post("/enter_data", headers=gowder_auth, data={"1": "no", "contract_id": "1"})
+        print(dbops.get_answers_for_contract(1)  # switch to test after inspecting output.
+        print(rsp.data)
 
 
 if __name__ == '__main__':

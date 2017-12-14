@@ -48,10 +48,14 @@ def add_data():
     questions = [x["question_id"] for x in dbops.get_questions()]
     answers = {}
     for q in questions:
-        answers[int(q)] = properbool(request.form[q])
+        if q in request.form:  # this is new and an untested check, meant to capture situations where somehow default values aren't added. I'm making default value true because all-trues will be easy to catch.
+            answers[int(q)] = properbool(request.form[q])
+        else:
+            answers[int(q)] = True
     dbops.add_answers(answers, int(request.form["contract_id"]), auth.username())
     # maybe log here?
     return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("coding"))
+# maybe I should add some kind of flag in the db for missing data?
 
 ###########################
 #

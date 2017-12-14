@@ -188,4 +188,14 @@ def add_answers(answers_from_user, contract_id, user_name):
     db.session.add_all(answers)
     db.session.commit()
     mark_contract_entered(contract_id, user_name)  # this includes a redundant db commit
-    return contract_id
+return contract_id
+
+###########################
+#
+# HELPER CODE FOR TESTING/DEBUGGING
+#
+###########################
+
+
+def get_answers_for_contract(contract_id):
+    return Answers.query.filter_by(question=contract_id).all()
