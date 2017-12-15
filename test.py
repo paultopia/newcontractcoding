@@ -1,5 +1,6 @@
 import unittest
 import dbops
+import sqlalchemy
 from flask_testing import TestCase
 from core import db
 from json import load
@@ -134,6 +135,23 @@ class TestChangePassword(TestStateful):
         dbops.change_user_password("student", "123456")
         self.assert200(self.client.get("/", headers=make_auth_header("student", "123456")))
         self.assert401(self.client.get("/", headers=make_auth_header("student", "password")))
+
+
+class TestDatabaseChecks(TestStateful):
+    def test_break_database(self):
+        db.session.remove()
+        db.drop_all()
+        self.assertRaises(sqlalchemy.exc.ProgrammingError, dbops.count_contracts)
+        db.session.remove()
+        db.drop_all()
+        db.create_all()
+        self.assertEqual(dbops.count_contracts(), 0)
+        self.assertEqual(dbops.count_questions(), 0)
+        self.assertEqual(len(dbops.list_administrators()), 0)
+        cycle()
+        self.assertEqual(dbops.count_contracts(), 2)
+        self.assertEqual(dbops.count_questions(), 31)
+        self.assertEqual(len(dbops.list_administrators()), 1)
 
 
 if __name__ == '__main__':

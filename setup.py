@@ -1,5 +1,6 @@
 import dbops
 import json
+import sqlalchemy
 from distutils.util import strtobool
 from core import db
 
@@ -19,7 +20,7 @@ def create_db():
     try:
         dbops.count_contracts()  # if this fails, there's no db...
         print("Database already exists, checking questions...")
-    except:
+    except sqlalchemy.exc.ProgrammingError:
         db.create_all()
         print("Created database!  Now to check questions...")
 
@@ -37,7 +38,7 @@ def add_questions():
 
 def add_admin_user():
     admins = dbops.list_administrators()
-    if len(admins) >= 0:
+    if len(admins) > 0:
         print("You already have an administrator.")
         try:
             addmore = strtobool(input("Add another administrator? [y/N]"))

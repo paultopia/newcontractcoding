@@ -88,3 +88,31 @@ STATEMENT:  SELECT contracts.id AS contracts_id, contracts.contract AS contracts
 	WHERE contracts.id = 'gowder' 
 	 LIMIT 1
 LOG:  unexpected EOF on client connection with an open transaction
+ERROR:  relation "contracts" does not exist at character 573
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+ERROR:  relation "contracts" does not exist at character 573
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+ERROR:  relation "contracts" does not exist at character 573
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+ERROR:  relation "contracts" does not exist at character 573
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+ERROR:  relation "contracts" does not exist at character 573
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+ERROR:  relation "contracts" does not exist at character 573
+STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
