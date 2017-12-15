@@ -20,7 +20,7 @@ def create_db():
     try:
         dbops.count_contracts()  # if this fails, there's no db...
         print("Database already exists, checking questions...")
-    except sqlalchemy.exc.ProgrammingError:
+    except:
         db.create_all()
         print("Created database!  Now to check questions...")
 
