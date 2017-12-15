@@ -33,6 +33,7 @@ def change_user_password(lastname, new_password):
     if user:
         hashed_password = make_password_hash(new_password)
         user.password = hashed_password
+        db.session.commit()
         return True
     return False
 # this is mainly for myself: I can add a dummy password for myself and then immediately login (USING INCOGNITO SO IT DOESN'T GET CACHED) and change it.

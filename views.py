@@ -81,6 +81,8 @@ def must_be_admin(f):
 def admin():
     return render_template("admin.html")
 
+# there's a bug here: if I don't go to the root page first to get a basic login, it calls admin without having access to the context of the logged in user, before prompting me to login. And then throws. I don't know why.  
+
 
 @core.route("/add_user", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
 @must_be_admin
