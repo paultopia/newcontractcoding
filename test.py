@@ -51,7 +51,7 @@ class TestBase(TestCase):
         return core
 
 
-class TestStateful(TestBase):  # adding class setup and teardown methods for test classes that mutate database and require isolation
+class TestStateful(TestBase):  # adding class setup and teardown methods for test classes that mutate database and require isolation.  classes that need isolation can just inherit from this.
     @classmethod
     def setUpClass(cls):
         cycle()
@@ -125,6 +125,13 @@ class TestAddDoc(TestStateful):
             csvfile = cf.read()
         target_index = csvstring.find("False")  # this allows me to compare the two strings without dealing with the fact that the date and time from the addition above will be different from the known correct data in the file.  I'm basically starting from the first row answers and the whole second row.  So I'm testing that the answer ordering is correct at least.
         self.assertEqual(csvstring[target_index:], csvfile[target_index:])
+
+
+class TestChangePassword(TestStateful):
+    def test_change_password(self):
+        dbops.change_user_password("student", "123456")
+        self.assert200(self.client.get("/", headers=make_auth_header("student", "123456")))
+        self.assert401(self.client.get("/", headers=make_auth_header("student", "password")))
 
 
 if __name__ == '__main__':

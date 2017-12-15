@@ -16,13 +16,25 @@ from io import StringIO
 #
 ###########################
 
+def make_password_hash(clear_password):
+    return bcrypt.hashpw(clear_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
+
 
 def add_user(lastname, email, clear_password, isadmin=False):
-    hashed_password = bcrypt.hashpw(clear_password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
-    user = Users(lastname, email, hashed_password, isadmin)
+    hashed_password = make_password_hash(clear_password)
+    user = Users(lastname.lower(), email, hashed_password, isadmin)
     db.session.add(user)
     db.session.commit()
     return lastname
+
+
+def change_user_password(lastname, new_password):
+    user = Users.query.get(lastname.lower())
+    if user:
+        hashed_password = make_password_hash(new_password)
+        user.password = hashed_password
+        return True
+    return False
 
 
 def list_users():
@@ -30,15 +42,15 @@ def list_users():
 
 
 def is_admin(lastname):
-    return Users.query.get(lastname).isadmin
+    return Users.query.get(lastname.lower()).isadmin
 
 
-def find_hashed_password(username):
-    return Users.query.filter_by(lastname=username).first().password
+def find_hashed_password(lastname):
+    return Users.query.get(lastname.lower()).password
 
 
 def add_users(usersjson):
-    users = [Users(x["lastname"],
+    users = [Users(x["lastname"].lower(),
                    x["email"],
                    bcrypt.hashpw(x["password"].encode('utf8'), bcrypt.gensalt()).decode('utf8'),
                    x["isadmin"]) for x in usersjson]
