@@ -48,9 +48,9 @@ def add_admin_user():
         addmore = True
     if addmore:
         print("Ok, let's add an administrator!")
-        username = input("Give me a last name for the administrator").lower()
-        email = input("What's the administrator's e-mail?")
-        password = input("Give me a password for the administrator")
+        username = input("Give me a last name for the administrator: ").lower()
+        email = input("What's the administrator's e-mail? ")
+        password = input("Give me a password for the administrator: ")
         print("Ok, your administrator username is {} and password is {} for e-mail {}".format(username, password, email))
         dbops.add_user(username, email, password, isadmin=True)
 
