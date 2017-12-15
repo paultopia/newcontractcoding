@@ -3,12 +3,18 @@ import dbops
 from flask_testing import TestCase
 from core import db
 from json import load
+from base64 import b64encode
 # http://pythonhosted.org/Flask-Testing/
 # http://pythontesting.net/framework/unittest/unittest-introduction/
 
 gowder_auth = {"Authorization": "Basic Z293ZGVyOnNlY3JldA=="}
 # this is the gowder code--- a base64 string of username + : + password I think, judging by this: https://gist.github.com/jarus/1160696 --- gotten by inspecting logged-in request in chrome devtools.
 
+
+def make_auth_header(name, password):  # this is based off the previous example
+    bs = bytes(name + ":" + password, "utf-8")
+    b64 = b64encode(bs).decode("utf-8")
+    return {"Authorization": "Basic " + b64}
 
 def cycle():
     db.session.remove()
@@ -80,9 +86,11 @@ class TestDbSetup(TestBase):
 
 class TestViewAccess(TestBase):
     def test_main_page_unauthorized(self):
-        self.assertEqual(self.client.get("/").status_code, 401)
-        loggedin = self.client.get("/", headers=gowder_auth)
-        self.assertEqual(loggedin.status_code, 200)
+        self.assert401(self.client.get("/"))
+        self.assert200(self.client.get("/", headers=gowder_auth))
+        self.assertEqual(gowder_auth, make_auth_header("gowder", "secret"))
+        self.assertEqual(self.client.get("/admin", headers=make_auth_header("student", "password")).data, b'Not authorized.')
+        self.assert200(self.client.get("/", headers=make_auth_header("student", "password")))
         # should add second method for authorized.  also should test auth for admin page with and without admin identity. i.e. need to test that student login can't get admin routes
 
 
@@ -95,7 +103,6 @@ class TestAddUser(TestStateful):
 
 
 class TestAddDoc(TestStateful):
-    maxDiff = None
 
     def test_add_document(self):  # should switch to do this from student
         rsp = self.client.post("/enter-data", headers=gowder_auth,
