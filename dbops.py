@@ -231,7 +231,7 @@ def _contract_row(contract_id):
 
 def _build_csv(filelike): 
     rows = Contracts.query.count()
-    writer = csv.writer(filelike)
+    writer = csv.writer(filelike, lineterminator='\n')
     writer.writerow(_header_row())
     for contract_id in range(1, rows + 1):
         writer.writerow(_contract_row(contract_id))
