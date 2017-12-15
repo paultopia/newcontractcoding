@@ -43,6 +43,10 @@ def list_users():
     return [x.lastname for x in Users.query.order_by(Users.lastname).all()]
 
 
+def list_administrators():
+    return [x.lastname for x in Users.query.filter_by(isadmin=True).all()]
+
+
 def is_admin(lastname):
     return Users.query.get(lastname.lower()).isadmin
 

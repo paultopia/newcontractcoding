@@ -89,8 +89,10 @@ class TestViewAccess(TestBase):
         self.assert401(self.client.get("/"))
         self.assert200(self.client.get("/", headers=gowder_auth))
         self.assertEqual(gowder_auth, make_auth_header("gowder", "secret"))
-        self.assertEqual(self.client.get("/admin", headers=make_auth_header("student", "password")).data, b'Not authorized.')
+        self.assert401(self.client.get("/admin", headers=make_auth_header("student", "password")))
+        self.assert200(self.client.get("/admin", headers=make_auth_header("gowder", "secret")))
         self.assert200(self.client.get("/", headers=make_auth_header("student", "password")))
+        self.assertEqual(dbops.list_administrators(), ['gowder'])
         # should add second method for authorized.  also should test auth for admin page with and without admin identity. i.e. need to test that student login can't get admin routes
 
 

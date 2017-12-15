@@ -8,6 +8,9 @@ from distutils.util import strtobool
 
 auth = HTTPBasicAuth()
 
+# alternate strategy for double authorization tracks from flask-httpauth author https://stackoverflow.com/a/31305421/4386239 --make two objects
+
+admin_auth = HTTPBasicAuth()
 
 def properbool(s):   # https://docs.python.org/3/distutils/apiref.html?highlight=strtobool#distutils.util.strtobool  can give it lowercase "true" or "false" or 1 and 0
     return(bool(strtobool(s)))  # this would probably work fine with ints rather than bool types, but I don't like implicit coercion on the way into the database.
@@ -18,8 +21,19 @@ def verify_pw(lastname, password):
     ln = lastname.lower()
     if ln in dbops.list_users():
         hashed_pw = dbops.find_hashed_password(ln)
-        return bcrypt.checkpw(password.encode('utf8'), hashed_pw.encode('utf8'))  # not sure whether this wants bytes or not, might have to call .encode('utf8') on either or both 
+        return bcrypt.checkpw(password.encode('utf8'), hashed_pw.encode('utf8'))  
     return False
+
+
+# this name repetition is intentional -- see https://stackoverflow.com/a/31305421/4386239 from author of Flask-HTTPAuth
+@admin_auth.verify_password
+def verify_pw(lastname, password):
+    ln = lastname.lower()
+    if ln in dbops.list_administrators():
+        hashed_pw = dbops.find_hashed_password(ln)
+        return bcrypt.checkpw(password.encode('utf8'), hashed_pw.encode('utf8'))
+    return False
+
 
 ###########################
 #
@@ -48,7 +62,7 @@ def add_data():
     questions = [x["question_id"] for x in dbops.get_questions()]
     answers = {}
     for q in questions:
-        if q in request.form:  # this is new and an untested check, meant to capture situations where somehow default values aren't added. I'm making default value true because all-trues will be easy to catch.
+        if q in request.form:  # I'm making default value true because all-trues will be easy to catch.
             answers[int(q)] = properbool(request.form[q])
         else:
             answers[int(q)] = True
@@ -64,20 +78,19 @@ def add_data():
 ###########################
 
 
-def must_be_admin(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        if dbops.is_admin(auth.username()):
-            return f(*args, **kwargs)
-        return "Not authorized."
-    return wrapper
-# I'm not sure that this is going to work to preserve the context with the username call.
-# if it doesn't work, I'll just stick this check into each admin function.
+# def must_be_admin(f):
+#     @wraps(f)
+#     def wrapper(*args, **kwargs):
+#         dummy_to_get_username = f(*args, **kwargs)
+#         if dbops.is_admin(auth.username()):
+#             return dummy_to_get_username
+#         return "Not authorized."
+#     return wrapper
 
 
 @core.route("/admin")
-@must_be_admin
-@auth.login_required
+# @must_be_admin
+@admin_auth.login_required
 def admin():
     return render_template("admin.html")
 
@@ -85,8 +98,8 @@ def admin():
 
 
 @core.route("/add_user", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
-@must_be_admin
-@auth.login_required
+# @must_be_admin
+@admin_auth.login_required
 def add_user():
     ln = dbops.add_user(request.form["lastname"],
                      request.form["email"],
@@ -97,8 +110,8 @@ def add_user():
 
 # THIS ROUTE ISN'T TESTED, NOR IS TEMPLATE STUFF ATTACHED TO IT.
 @core.route("/change_password", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
-@must_be_admin
-@auth.login_required
+# @must_be_admin
+@admin_auth.login_required
 def change_password():
     success = dbops.change_user_password(request.form["lastname"],
                                          request.form["new_password"])
@@ -109,8 +122,8 @@ def change_password():
 
 
 @core.route("/flush_pending", methods=['POST'])
-@must_be_admin
-@auth.login_required
+# @must_be_admin
+@admin_auth.login_required
 def flush_pending():
     success = dbops.flush_documents()
     if success:
@@ -119,8 +132,8 @@ def flush_pending():
 
 
 @core.route("/add_contract", methods=['POST'])
-@must_be_admin
-@auth.login_required
+# @must_be_admin
+@admin_auth.login_required
 def add_contract():
     contract = {"contract": request.form["contract"], "url": request.form["url"]}
     dbops.add_contract(contract)

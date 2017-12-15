@@ -87,3 +87,4 @@ STATEMENT:  SELECT contracts.id AS contracts_id, contracts.contract AS contracts
 	FROM contracts 
 	WHERE contracts.id = 'gowder' 
 	 LIMIT 1
+LOG:  unexpected EOF on client connection with an open transaction
