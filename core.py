@@ -1,9 +1,8 @@
 import os
 from flask import Flask
 from flaskext.markdown import Markdown
+from flask_heroku import Heroku
 is_local = bool(os.environ.get("NEW_CONTRACT_CODING_LOCAL"))
-if not is_local:
-    from flask_heroku import Heroku
 core = Flask(__name__)
 Markdown(core)
 if is_local:
