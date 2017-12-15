@@ -71,6 +71,10 @@ def add_users(usersjson):
 ###########################
 
 
+def count_questions():
+    return Questions.query.count()
+
+
 def get_questions():
     return [{"question_id": str(x.id),
              "questiontext": x.questiontext,
@@ -88,6 +92,10 @@ def add_questions(questionsjson):
 # CONTRACTS
 #
 ###########################
+
+
+def count_contracts():
+    return Contracts.query.count()
 
 
 def mark_contract_live(contract_id):
@@ -254,7 +262,8 @@ def _build_csv(filelike):
     for contract_id in range(1, rows + 1):
         writer.writerow(_contract_row(contract_id))
     return None
-    
+
+
 def csv_file(full_path_to_file):
     dir = os.path.dirname(full_path_to_file)
     if not os.path.exists (dir):
@@ -264,7 +273,7 @@ def csv_file(full_path_to_file):
         _build_csv(out)
     return full_path_to_file
 
-    
+
 def csv_string():
     with StringIO() as out:
         _build_csv(out)
