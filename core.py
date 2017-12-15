@@ -9,11 +9,11 @@ if is_local:
     core.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/contracts-part2'
 # need to run createdb contracts-part2
 core.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy(core)
 if not is_local:
     heroku = Heroku(core)
-    print("Called heroku.")
+    # print("Called heroku.")
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy(core)
 
 # this is horrifying but apparently it's how flask rolls.
 # see: http://flask.pocoo.org/docs/0.10/patterns/packages/
