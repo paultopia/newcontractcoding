@@ -1,6 +1,12 @@
+import os
+os.environ["NEW_CONTRACT_CODING_LOCAL"] = "true"
+# have to start with this in order to guarantee that app object creation will be in local config.
+
 import dbops
 import requests
 from core import db
+
+
 
 def add_documents(docsjsonurl):
     dbops.add_contracts(requests.get(docsjsonurl).json())

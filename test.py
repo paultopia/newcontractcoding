@@ -1,3 +1,7 @@
+import os
+os.environ["NEW_CONTRACT_CODING_LOCAL"] = "true"
+# have to start with this in order to guarantee that app object creation will be in local config.
+
 import unittest
 import dbops
 import sqlalchemy
