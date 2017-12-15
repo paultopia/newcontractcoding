@@ -35,6 +35,7 @@ def change_user_password(lastname, new_password):
         user.password = hashed_password
         return True
     return False
+# this is mainly for myself: I can add a dummy password for myself and then immediately login (USING INCOGNITO SO IT DOESN'T GET CACHED) and change it.
 
 
 def list_users():

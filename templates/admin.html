@@ -37,6 +37,25 @@
 
             <div class="row">
                 <div class="twelve columns">
+                    <form method="POST" action="{{ url_for('change_password') }}">
+                        <p>
+                            <label for="lastname">Last name:</label>
+                            <input type="text" id="lastname" name="lastname">
+                        </p>
+                        <p>
+                            <label for="new_password">New Password:</label>
+                            <input type="text" id="new_password" name="new_password">
+                        </p>
+                        
+                        <center><button type="submit" class="button-primary">Change User Password</button></center>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="twelve columns">
                     <form method="POST" action="{{ url_for('add_contract') }}">
                         <p>
                             <label for="contract">Contract:</label>

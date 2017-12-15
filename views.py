@@ -93,6 +93,19 @@ def add_user():
     return 'Successfully added {}!  <a href="{}">Carry out another admin task?</a>'.format(ln, url_for("admin"))
 
 
+# THIS ROUTE ISN'T TESTED, NOR IS TEMPLATE STUFF ATTACHED TO IT.
+@core.route("/change_password", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
+@must_be_admin
+@auth.login_required
+def change_password():
+    success = dbops.change_user_password(request.form["lastname"],
+                                         request.form["new_password"])
+    if success:
+        return 'Successfully changed password for {}!  <a href="{}">Carry out another admin task?</a>'.format(request.form["lastname"], url_for("admin"))
+    else:
+        return 'Did not successfully change password.  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
+
+
 @core.route("/flush_pending", methods=['POST'])
 @must_be_admin
 @auth.login_required
