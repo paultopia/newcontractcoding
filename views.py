@@ -46,7 +46,7 @@ def verify_pw(lastname, password):
 @auth.login_required
 def coding():
     """this route will offer a coding page."""
-    user_name = auth.username()
+    user_name = auth.username().lower()
     questions = dbops.get_questions()
     contract = dbops.fetch_contract(user_name)
     if contract:
