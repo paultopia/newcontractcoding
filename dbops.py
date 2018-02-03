@@ -110,6 +110,7 @@ def entered_by_counts():  # this is probably not the best way to do this. There'
         counts[user] = cnt
     return counts
 
+
 def mark_contract_live(contract_id):
     contract = Contracts.query.get(contract_id)
     contract.inprogress = True

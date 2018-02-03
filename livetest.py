@@ -1,6 +1,6 @@
 import os
 os.environ["NEW_CONTRACT_CODING_LOCAL"] = "true"
-# have to start with this in order to guarantee that app object creation will be in local config.
+# have to start with this in order to guarantee that app object creation will be in local config.  It doesn't seem to work from here, though, for some weird reason...
 
 import dbops
 import requests

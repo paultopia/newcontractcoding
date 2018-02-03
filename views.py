@@ -3,8 +3,8 @@ from core import core
 import dbops
 from flask_httpauth import HTTPBasicAuth
 from flask import render_template, request, url_for
-from functools import wraps
 from distutils.util import strtobool
+import json
 
 auth = HTTPBasicAuth()
 
@@ -78,27 +78,13 @@ def add_data():
 ###########################
 
 
-# def must_be_admin(f):
-#     @wraps(f)
-#     def wrapper(*args, **kwargs):
-#         dummy_to_get_username = f(*args, **kwargs)
-#         if dbops.is_admin(auth.username()):
-#             return dummy_to_get_username
-#         return "Not authorized."
-#     return wrapper
-
-
 @core.route("/admin")
-# @must_be_admin
 @admin_auth.login_required
 def admin():
     return render_template("admin.html")
 
-# there's a bug here: if I don't go to the root page first to get a basic login, it calls admin without having access to the context of the logged in user, before prompting me to login. And then throws. I don't know why.  
-
 
 @core.route("/add_user", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
-# @must_be_admin
 @admin_auth.login_required
 def add_user():
     ln = dbops.add_user(request.form["lastname"],
@@ -110,7 +96,6 @@ def add_user():
 
 # THIS ROUTE ISN'T TESTED, NOR IS TEMPLATE STUFF ATTACHED TO IT.
 @core.route("/change_password", methods=['POST'])  # does not permit adding admin users.  do that from psql or something. there should only be one admin user anyway.
-# @must_be_admin
 @admin_auth.login_required
 def change_password():
     success = dbops.change_user_password(request.form["lastname"],
@@ -122,7 +107,6 @@ def change_password():
 
 
 @core.route("/flush_pending", methods=['POST'])
-# @must_be_admin
 @admin_auth.login_required
 def flush_pending():
     success = dbops.flush_documents()
@@ -132,9 +116,16 @@ def flush_pending():
 
 
 @core.route("/add_contract", methods=['POST'])
-# @must_be_admin
 @admin_auth.login_required
 def add_contract():
     contract = {"contract": request.form["contract"], "url": request.form["url"]}
     dbops.add_contract(contract)
     return 'Successfully added a contract!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
+
+
+@core.route("/count_entered_by_user", methods=['POST'])
+@admin_auth.login_required
+def count_entered_by_user():
+    counts = dbops.entered_by_counts()
+    outstring = json.dumps(counts, indent=4)
+    return outstring + '\n\n<a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
