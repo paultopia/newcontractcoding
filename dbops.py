@@ -5,6 +5,7 @@ from core import db
 from database import Contracts, Questions, Users, Answers
 from datetime import datetime
 from io import StringIO
+from functools import partial
 
 
 # I should just make an admin view with an interface to add other users, and to grab the documents to code from a url somewhere.
@@ -149,31 +150,31 @@ def fetch_contract(user_name):
     return {"contract_id": str(contract.id), "contract_url": contract.url, "contract_text": contract.contract, "user_name": uname}
 
 
-def hours_ago(now, then):
+def hours_ago(seconds, now, then):
     diff = now - then
-    return diff.total_seconds() / 3600.0
+    return diff.total_seconds() / float(seconds)
 
 
-def is_stale(contract_row):
+def is_stale(seconds, contract_row):
     now = datetime.utcnow()
-    diff = hours_ago(now, contract_row.inprogressstarted) # may fail if inprogressstarted needs to be parsed to get a datetime object.
+    diff = hours_ago(seconds, now, contract_row.inprogressstarted) # may fail if inprogressstarted needs to be parsed to get a datetime object.
     return diff > 1
 
 
-def flush_documents():
-    """get every doc that has been marked as live for > 1hr and mark it non-live
-    
-    I'm a little bit concerned about this: if there are a lot of stale documents, this could blow out the memory.  
+def flush_documents(seconds=3600):
+    """get every doc that has been marked as live for > 1hr (or otherwise seconds) and mark it non-live
+
+    I'm a little bit concerned about this: if there are a lot of stale documents, this could blow out the memory.
     Could I keep them out of memory by doing the update in the database layer inside the query object?  I'm not sure.
-    Need to find out: 
-    (a) whether some update like 2/3 in here https://stackoverflow.com/a/33638391/4386239 that doesn't actually fetch docs will keep the records out of memory in the python application, 
-    (b) if so, whether that will mean that heroku will let me run it off-dyno w/o memory limits, since postgres is all kinds of separate process, and 
+    Need to find out:
+    (a) whether some update like 2/3 in here https://stackoverflow.com/a/33638391/4386239 that doesn't actually fetch docs will keep the records out of memory in the python application,
+    (b) if so, whether that will mean that heroku will let me run it off-dyno w/o memory limits, since postgres is all kinds of separate process, and
     (c) if so, how to actually execute the time diff check query inside the ORM rather than in python code.
-    
-    But that might also be a premature optimization, since this is an unlikely corner case---worst case scenario I blow the memory and then I just manually update every record to turn off inprogress flag and restart. 
+
+But that might also be a premature optimization, since this is an unlikely corner case---worst case scenario I blow the memory and then I just manually update every record to turn off inprogress flag and restart.
     """
     contracts = Contracts.query.filter_by(inprogress=True).all()
-    stale = filter(is_stale, contracts)
+    stale = filter(partial(is_stale, seconds), contracts)
     for k in stale:
         k.inprogress = False
     db.session.commit()

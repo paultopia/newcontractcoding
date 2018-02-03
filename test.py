@@ -2,6 +2,8 @@ import os
 os.environ["NEW_CONTRACT_CODING_LOCAL"] = "true"
 # have to start with this in order to guarantee that app object creation will be in local config.
 
+# also need to start db with pg_ctl -D /usr/local/var/postgres start
+
 import unittest
 import dbops
 import sqlalchemy
@@ -9,6 +11,8 @@ from flask_testing import TestCase
 from core import db
 from json import load
 from base64 import b64encode
+from database import Contracts
+from time import sleep
 # http://pythonhosted.org/Flask-Testing/
 # http://pythontesting.net/framework/unittest/unittest-introduction/
 
@@ -156,6 +160,36 @@ class TestDatabaseChecks(TestStateful):
         self.assertEqual(dbops.count_contracts(), 2)
         self.assertEqual(dbops.count_questions(), 31)
         self.assertEqual(len(dbops.list_administrators()), 1)
+
+class TestFlush(TestStateful):
+    def test_mark_live(self):
+        self.assertEqual(Contracts.query.get(1).inprogress, False)
+        dbops.mark_contract_live(1)
+        self.assertEqual(Contracts.query.get(1).inprogress, True)
+
+    def test_flush_contract(self):
+        dbops.mark_contract_live(1)
+        self.assertEqual(Contracts.query.get(1).inprogress, True)
+        sleep(2)
+        dbops.flush_documents(seconds=1)
+        self.assertEqual(Contracts.query.get(1).inprogress, False)
+
+    def test_force_flush(self):
+        dbops.mark_contract_live(1)
+        self.assertEqual(Contracts.query.get(1).inprogress, True)
+        dbops.force_flush_documents()
+        self.assertEqual(Contracts.query.get(1).inprogress, False)
+
+    def test_insufficient_flush_time(self):
+        dbops.mark_contract_live(1)
+        self.assertEqual(Contracts.query.get(1).inprogress, True)
+        dbops.flush_documents()
+        self.assertEqual(Contracts.query.get(1).inprogress, True)
+        dbops.force_flush_documents()
+        self.assertEqual(Contracts.query.get(1).inprogress, False)
+
+
+
 
 
 if __name__ == '__main__':
