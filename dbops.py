@@ -6,6 +6,7 @@ from database import Contracts, Questions, Users, Answers
 from datetime import datetime
 from io import StringIO
 from functools import partial
+# from sqlalchemy.sql import func  # apparently this is available thanks to flask-sqlalchemy, or at least doesn't throw.
 
 
 # I should just make an admin view with an interface to add other users, and to grab the documents to code from a url somewhere.
@@ -98,6 +99,16 @@ def add_questions(questionsjson):
 def count_contracts():
     return Contracts.query.count()
 
+
+def entered_by_counts():  # this is probably not the best way to do this. There's probably a sqlalchemy solution...
+    usernames = list_users()
+    counts = {}
+    for user in usernames:
+        cnt = counts.get(user, 0)
+        cnt += Contracts.query.filter(Contracts.firstenteredby == user).count()
+        cnt += Contracts.query.filter(Contracts.secondenteredby == user).count()
+        counts[user] = cnt
+    return counts
 
 def mark_contract_live(contract_id):
     contract = Contracts.query.get(contract_id)

@@ -161,6 +161,7 @@ class TestDatabaseChecks(TestStateful):
         self.assertEqual(dbops.count_questions(), 31)
         self.assertEqual(len(dbops.list_administrators()), 1)
 
+
 class TestFlush(TestStateful):
     def test_mark_live(self):
         self.assertEqual(Contracts.query.get(1).inprogress, False)
@@ -189,7 +190,13 @@ class TestFlush(TestStateful):
         self.assertEqual(Contracts.query.get(1).inprogress, False)
 
 
-
+class TestEnter(TestStateful):
+    def test_list(self):
+        dbops.add_answers({1: True, 2: False}, 1, "student")
+        dbops.add_answers({1: False, 2: True}, 2, "gowder")
+        dbops.add_answers({1: False, 2: True}, 1, "gowder")
+        self.assertEqual(len(dbops.get_all_answers()), 6)
+        self.assertEqual(dbops.entered_by_counts(), {'gowder': 2, 'student': 1})
 
 
 if __name__ == '__main__':
