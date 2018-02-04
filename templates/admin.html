@@ -89,11 +89,45 @@
                             
                             <center><button type="submit" class="button-primary">Count Contracts by User</button></center>
                         </form>
+                        <hr>
                     </div>
                 </div>
+
+
+                <div class="row">
+                    <div class="twelve columns">
+                        <form method="POST" action="{{ url_for('list_questions') }}">
+                            
+                            <center><button type="submit" class="button-primary">List Questions</button></center>
+                        </form>
+                        <hr>
+                    </div>
+                </div>
+
                 
-                
-                
+
+
+                <div class="row">
+                    <div class="twelve columns">
+                        <form method="POST" action="{{ url_for('add_to_question') }}">
+                            <p>
+                                <label for="question_id">URL:</label>
+                                <input type="text" id="question_id" name="question_id">
+                            </p>
+                            <p>
+                                <label for="new_exp">Additional Explanation:</label>
+                                <textarea cols="80" rows="20" id="new_exp" name="new_exp"></textarea>
+                            </p>
+
+                            
+                            <center><button type="submit" class="button-primary">Add Explanation to Question</button></center>
+                        </form>
+                        <hr>
+                    </div>
+                </div>
+
+
+
             </div>
     </body>
 </html>

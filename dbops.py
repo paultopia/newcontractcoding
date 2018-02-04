@@ -89,6 +89,19 @@ def add_questions(questionsjson):
     db.session.commit()
     return True
 
+
+def add_to_question_explanation(question_id, new_exp):
+    today = str(datetime.date(datetime.now()))
+    question = Questions.query.get(question_id)
+    oldtext = question.questiontext
+    oldexplanation = question.explanation
+    newtext = oldtext + " \n  ATTENTION: NEW EXPLANATION ADDED on {}, please ensure you've seen it.".format(today)
+    newexplanation = oldexplanation + " \n " + new_exp
+    question.questiontext = newtext
+    question.explanation = newexplanation
+    db.session.commit()
+
+
 ###########################
 #
 # CONTRACTS

@@ -13,6 +13,7 @@ from json import load
 from base64 import b64encode
 from database import Contracts
 from time import sleep
+from datetime import datetime
 # http://pythonhosted.org/Flask-Testing/
 # http://pythontesting.net/framework/unittest/unittest-introduction/
 
@@ -215,6 +216,23 @@ class TestEnter(TestStateful):
         dbops.add_answers({1: False, 2: True}, 1, "gowder")
         self.assertEqual(len(dbops.get_all_answers()), 6)
         self.assertEqual(dbops.entered_by_counts(), {'gowder': 2, 'student': 1})
+
+
+class TestModifyQuestion(TestStateful):
+
+    def test_modify_question(self):
+        rsp = self.client.post("/add_to_question",
+                               headers=make_auth_header("gowder", "secret"),
+                               data={"question_id": "1",
+                                     "new_exp": "here is some new text"})
+        self.assert200(rsp)
+        today = str(datetime.date(datetime.now()))
+        correct_question = "Is this a contract that purports to change or specify an individual's rights or obligations? \n  ATTENTION: NEW EXPLANATION ADDED on {}, please ensure you've seen it.".format(today)
+        correct_explanation = 'Answer "yes" if the document purports to bind an individual to anything, or makes any binding promises or assertions on behalf of the contract author.  In addition to more obvious kinds of promises, this also includes situations, e.g., where the contract says that individuals make representations about their preexisting knowledge or legal rights and obligations (for example, asserting that they own copyright to some content they provide, or that they are knowingly taking some risk). \n\nAnswer "no" if the document is a privacy policy that merely notifies the individual of what will be done with their data, but answer "yes" if there are any other contractual provisions that change a individual\'s legal rights or obligations.  I expect that many privacy policies will be mixed up in here, so please keep an eye out for them.  \n\nYou should also answer "no" if this is an erroneous addition to the dataset, for example, if some random document slipped in.\n\nIf this question is answered "no," coding for this document will terminate.\n\nIn case of doubt, answer "yes." \n here is some new text'
+        newq = dbops.get_questions()[0]
+        self.assertEqual(newq["questiontext"], correct_question)
+        self.assertEqual(newq["explanation"], correct_explanation)
+
 
 
 if __name__ == '__main__':

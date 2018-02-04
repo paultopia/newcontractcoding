@@ -129,3 +129,20 @@ def count_entered_by_user():
     counts = dbops.entered_by_counts()
     outstring = json.dumps(counts, indent=4)
     return outstring + '\n\n<a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
+
+
+@core.route("/list_questions", methods=['POST'])
+@admin_auth.login_required
+def list_questions():
+    questions = dbops.get_questions()
+    outstring = json.dumps(questions, indent=4)
+    return outstring + '\n\n<a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
+
+
+@core.route("/add_to_question", methods=['POST'])
+@admin_auth.login_required
+def add_to_question():
+    question_id = int(request.form["question_id"].strip())
+    new_exp = request.form["new_exp"].strip()
+    dbops.add_to_question_explanation(question_id, new_exp)
+    return "Done! " + '\n\n<a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
