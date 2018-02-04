@@ -66,7 +66,7 @@ def add_data():
             answers[int(q)] = properbool(request.form[q])
         else:
             answers[int(q)] = True
-    dbops.add_answers(answers, int(request.form["contract_id"]), auth.username())
+    dbops.add_answers(answers, int(request.form["contract_id"]), auth.username().lower())
     # maybe log here?
     return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("coding"))
 # maybe I should add some kind of flag in the db for missing data?

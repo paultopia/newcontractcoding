@@ -137,6 +137,24 @@ class TestAddDoc(TestStateful):
         target_index = csvstring.find("False")  # this allows me to compare the two strings without dealing with the fact that the date and time from the addition above will be different from the known correct data in the file.  I'm basically starting from the first row answers and the whole second row.  So I'm testing that the answer ordering is correct at least.
         self.assertEqual(csvstring[target_index:], csvfile[target_index:])
 
+    def test_caps_addition(self):  # this tests a recurrent bug where capitalized login works but won't let data entry---all usernames are lowercase.
+        capitalized_auth_header = make_auth_header("Student", "password")
+        rsp = self.client.post("/enter-data", headers=capitalized_auth_header,
+                               data={"1": "no",
+                                     "2": "yes",
+                                     "3": "no",
+                                     "4": "yes",
+                                     "5": "no",
+                                     "6": "yes",
+                                     "7": "no",
+                                     "8": "no",
+                                     "contract_id": "1"})
+        answerlist = dbops.pick_contract(1).answers
+        self.assertEqual({answerlist[0].id: answerlist[0].answer,
+                          answerlist[1].id: answerlist[1].answer},
+                         {1: False, 2: True})
+        self.assertEqual(rsp.data, b'To enter another contract, <a href="/">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>')
+
 
 class TestChangePassword(TestStateful):
     def test_change_password(self):

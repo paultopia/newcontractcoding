@@ -125,12 +125,13 @@ def mark_contract_entered(contract_id, user_name):
     if document already has a first entry, then add a second entry.
     if not, add a first entry.  Also flip state from live to not-live.
     """
+    uname = user_name.lower()
     contract = Contracts.query.get(contract_id)
     if contract.firstenteredby:
-        contract.secondenteredby = user_name
+        contract.secondenteredby = uname
         contract.secondenteredon = datetime.utcnow()
     else:
-        contract.firstenteredby = user_name
+        contract.firstenteredby = uname
         contract.firstenteredon = datetime.utcnow()
     contract.inprogress = False
     db.session.commit()
@@ -230,7 +231,7 @@ def add_answers(answers_from_user, contract_id, user_name):
     answers = [Answers(x, contract_id, answers_from_user[x], user_name.lower()) for x in answers_from_user.keys()]
     db.session.add_all(answers)
     db.session.commit()
-    mark_contract_entered(contract_id, user_name)  # this includes a redundant db commit
+    mark_contract_entered(contract_id, user_name.lower())  # this includes a redundant db commit
     return contract_id
 
 ###########################
