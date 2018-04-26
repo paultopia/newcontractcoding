@@ -18,6 +18,10 @@ from testhelperclasses import *
 # http://pythonhosted.org/Flask-Testing/
 # http://pythontesting.net/framework/unittest/unittest-introduction/
 
+# try to get a file with new test classes
+
+from raceconditiontest import *
+
 gowder_auth = {"Authorization": "Basic Z293ZGVyOnNlY3JldA=="}
 # this is the gowder code--- a base64 string of username + : + password I think, judging by this: https://gist.github.com/jarus/1160696 --- gotten by inspecting logged-in request in chrome devtools.
 
