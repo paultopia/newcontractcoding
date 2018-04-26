@@ -17,3 +17,80 @@ server started
 2018-04-26 16:05:51.002 CDT [31976] STATEMENT:  SELECT count(*) AS count_1 
 	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
 	FROM contracts) AS anon_1
+2018-04-26 16:10:12.999 CDT [32175] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 16:10:12.999 CDT [32175] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 16:13:52.638 CDT [32320] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 16:13:52.638 CDT [32320] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 16:16:55.440 CDT [32402] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 16:16:55.440 CDT [32402] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 16:18:44.874 CDT [32513] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 16:18:44.874 CDT [32513] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 16:22:28.911 CDT [32709] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 16:22:28.911 CDT [32709] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 16:56:58.781 CDT [33544] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 16:56:58.781 CDT [33544] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:02:55.214 CDT [33758] ERROR:  deadlock detected
+2018-04-26 17:02:55.214 CDT [33758] DETAIL:  Process 33758 waits for AccessExclusiveLock on relation 93201 of database 16401; blocked by process 33755.
+	Process 33755 waits for AccessShareLock on relation 93191 of database 16401; blocked by process 33758.
+	Process 33758: 
+	DROP TABLE answers
+	Process 33755: SELECT questions.id AS questions_id, questions.questiontext AS questions_questiontext, questions.explanation AS questions_explanation 
+	FROM questions ORDER BY questions.id
+2018-04-26 17:02:55.214 CDT [33758] HINT:  See server log for query details.
+2018-04-26 17:02:55.214 CDT [33758] STATEMENT:  
+	DROP TABLE answers
+2018-04-26 17:02:59.107 CDT [33755] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:02:59.107 CDT [33755] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:05:15.843 CDT [33816] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:05:15.843 CDT [33816] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:06:26.229 CDT [33860] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:06:26.229 CDT [33860] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:10:37.713 CDT [34005] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:10:37.713 CDT [34005] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:11:17.597 CDT [34035] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:11:17.597 CDT [34035] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:13:20.696 CDT [34109] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:13:20.696 CDT [34109] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:14:25.286 CDT [34164] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:14:25.286 CDT [34164] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:19:54.278 CDT [34442] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:19:54.278 CDT [34442] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:21:36.187 CDT [34563] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:21:36.187 CDT [34563] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-04-26 17:44:11.491 CDT [35636] ERROR:  duplicate key value violates unique constraint "users_pkey"
+2018-04-26 17:44:11.491 CDT [35636] DETAIL:  Key (lastname)=(gowder) already exists.
+2018-04-26 17:44:11.491 CDT [35636] STATEMENT:  INSERT INTO users (lastname, email, password, isadmin) VALUES ('gowder', 'paul.gowder@gmail.com', '$2b$12$97C9izHCUFVJJBwNOiYgU.UXE/ktwnAdMwjPRAM9h8EX4mzmC3K0G', true)
+2018-04-26 17:44:44.558 CDT [35698] ERROR:  relation "contracts" does not exist at character 573
+2018-04-26 17:44:44.558 CDT [35698] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
