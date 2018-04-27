@@ -16,15 +16,16 @@ def safer_add_answers(answers_from_user, contract_id, user_name):
     if contract.firstenteredby:
         contract.secondenteredby = uname
         contract.secondenteredon = now
-        whichentry = 1
+        whichentry = 2
     else:
         contract.firstenteredby = uname
         contract.firstenteredon = now
-        whichentry = 2
+        whichentry = 1
     contract.inprogress = False
     answers = [Answers(x, contract_id, answers_from_user[x], uname) for x in answers_from_user.keys()]
     db.session.add_all(answers)
     db.session.commit()
+    db.session.close()
     updated_contract = Contracts.query.get(contract_id)
     errorstate = True
     if whichentry == 1 and updated_contract.firstenteredby == uname and updated_contract.inprogress == False:

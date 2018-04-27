@@ -67,12 +67,11 @@ def add_data():
             answers[int(q)] = properbool(request.form[q])
         else:
             answers[int(q)] = True
-    dbops.add_answers(answers, int(request.form["contract_id"]), auth.username().lower())
-    # attempted fix code not working
-    # see: https://stackoverflow.com/questions/50054225/flask-sqlalchemy-commits-not-showing-up-on-subsequent-query
-    # added = safer_add_answers(answers, int(request.form["contract_id"]), auth.username().lower())
-    # if added["error"]:
-    # 	return "there's been a database glitch. Please tell Gowder that this happened, and that there's a problem with contract number {}. Then wait a while before doing the next one, and let Gowder know if you see the same document.  Please don't enter the same document twice.".format(request.form["contract_id"])
+    # dbops.add_answers(answers, int(request.form["contract_id"]), auth.username().lower())
+    # next 3 lines are new code to attempt to fix race condition bug.
+    added = safer_add_answers(answers, int(request.form["contract_id"]), auth.username().lower())
+    if added["error"]:
+    	return "there's been a database glitch. Please tell Gowder that this happened, and that there's a problem with contract number {}. Then wait a while before doing the next one, and let Gowder know if you see the same document.  Please don't enter the same document twice.".format(request.form["contract_id"])
     return 'To enter another contract, <a href="{}">click here!</a>.  If you are done, just close the browser window. <b>Please do not click the link unless you are ready to enter another contract.</b>'.format(url_for("coding"))
 # maybe I should add some kind of flag in the db for missing data?
 
