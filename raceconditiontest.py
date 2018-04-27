@@ -36,6 +36,10 @@ class TestSyncUpdate(TestStateful):
 
 class TestThreadedUpdate(TestStateful):
     def test_threads(self):
+        """this is supposed to catch my race condition but it isn't,
+        maybe because there isn't one?  anyway, it passes, but
+        I was hoping it would fail.
+        """
         firstpage = get_root_page(self)
         self.assertTrue(firstcontract(firstpage))
         self.assertFalse(secondcontract(firstpage))
