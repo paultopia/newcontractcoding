@@ -166,6 +166,7 @@ def fetch_contract(user_name):
     returns contract id and text + userid just in case.
     """
     uname = user_name.lower()
+    # TODO: write some tests for this to make sure filters are working. 
     contract = Contracts.query.filter_by(inprogress=False, firstenteredby=None).first()
     if contract is None:
         contract = Contracts.query.filter(Contracts.firstenteredby != uname).filter_by(inprogress=False, secondenteredby=None).first()

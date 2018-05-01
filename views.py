@@ -46,6 +46,7 @@ def verify_pw(lastname, password):
 @core.route("/")
 @auth.login_required
 def coding():
+    # maybe aquire a lock here?
     """this route will offer a coding page."""
     user_name = auth.username().lower()
     questions = dbops.get_questions()
