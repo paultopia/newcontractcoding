@@ -6,6 +6,7 @@ from flask import render_template, request, url_for
 from distutils.util import strtobool
 import json
 from experimental_safer_add import safer_add_answers
+import getcontract
 
 auth = HTTPBasicAuth()
 
@@ -126,6 +127,17 @@ def add_contract():
     contract = {"contract": request.form["contract"], "url": request.form["url"]}
     dbops.add_contract(contract)
     return 'Successfully added a contract!  <a href="{}">Carry out another admin task?</a>'.format(url_for("admin"))
+
+
+@core.route("/fetch_and_add_contract", methods=['POST'])
+@admin_auth.login_required
+def fetch_and_add_contract():
+    url = request.form["url"]
+    contract = getcontract.get_contract(url)
+    if contract is None:
+        return "failed to add contract"
+    dbops.add_contract({"contract": contract, "url": url})
+    return 'contract addition successful'
 
 
 @core.route("/count_entered_by_user", methods=['POST'])

@@ -70,6 +70,14 @@ class TestAddUser(TestStateful):
         self.assertEqual(dbops.list_users(), ['gowder', 'stub', 'student'])
 
 
+class TestAddContractViaAPI(TestStateful):
+
+    def test_add_contract_via_api(self):
+        rsp = self.client.post("/fetch_and_add_contract", headers=gowder_auth, data={"url": "https://about.gitlab.com/terms/"})
+        self.assertEqual(rsp.data, b'contract addition successful')
+        print(dbops.count_contracts())
+
+
 class TestAddDoc(TestStateful):
 
     def test_add_document(self):  # should switch to do this from student
