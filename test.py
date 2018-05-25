@@ -73,9 +73,13 @@ class TestAddUser(TestStateful):
 class TestAddContractViaAPI(TestStateful):
 
     def test_add_contract_via_api(self):
+        self.assertEqual(dbops.count_contracts(), 2)
         rsp = self.client.post("/fetch_and_add_contract", headers=gowder_auth, data={"url": "https://about.gitlab.com/terms/"})
         self.assertEqual(rsp.data, b'contract addition successful')
-        print(dbops.count_contracts())
+        self.assertEqual(dbops.count_contracts(), 3)
+
+    def test_unauthorized_api_access(self):
+        self.assert401(self.client.post("/fetch_and_add_contract"))
 
 
 class TestAddDoc(TestStateful):

@@ -25,3 +25,11 @@ server started
 2018-05-24 23:51:07.370 CDT [56165] STATEMENT:  SELECT count(*) AS count_1 
 	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
 	FROM contracts) AS anon_1
+2018-05-24 23:53:22.358 CDT [56339] ERROR:  relation "contracts" does not exist at character 573
+2018-05-24 23:53:22.358 CDT [56339] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
+2018-05-24 23:53:53.605 CDT [56378] ERROR:  relation "contracts" does not exist at character 573
+2018-05-24 23:53:53.605 CDT [56378] STATEMENT:  SELECT count(*) AS count_1 
+	FROM (SELECT contracts.id AS contracts_id, contracts.contract AS contracts_contract, contracts.url AS contracts_url, contracts.firstadded AS contracts_firstadded, contracts.firstaddedby AS contracts_firstaddedby, contracts.inprogress AS contracts_inprogress, contracts.inprogressstarted AS contracts_inprogressstarted, contracts.firstenteredby AS contracts_firstenteredby, contracts.firstenteredon AS contracts_firstenteredon, contracts.secondenteredby AS contracts_secondenteredby, contracts.secondenteredon AS contracts_secondenteredon 
+	FROM contracts) AS anon_1
